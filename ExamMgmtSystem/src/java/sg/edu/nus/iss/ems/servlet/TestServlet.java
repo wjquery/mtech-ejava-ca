@@ -10,7 +10,6 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,11 +35,8 @@ public class TestServlet extends HttpServlet {
             try (PreparedStatement selStmt = conn.prepareStatement("select * from module")) {
                 //selStmt.setInt(1, 1);
                 ResultSet result = selStmt.executeQuery();
-                if (result.next()) {
+                while (result.next()) {
                     System.out.println(result.getString("Code") + ": " + result.getString("Name"));
-                }
-                else {
-                    
                 }
             }
         } catch (Exception e) {
