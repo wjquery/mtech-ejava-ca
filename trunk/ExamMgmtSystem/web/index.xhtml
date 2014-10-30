@@ -8,8 +8,30 @@
     </h:head>
     <h:body>
         <ui:composition template="WEB-INF/templates/master.xhtml">
-            <ui:define name="body">
-                Hello
+            <ui:define name="content">
+                <div class="panel" style="width: 300px; height: 120px; margin: 80px auto;">
+                    <form action="#" method="post">
+                        <table style="margin: 30px auto;">
+                            <tr>
+                                <td>User Name</td>
+                                <td><input type="text" name="id" size="15" maxlength="20"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Password</td>
+                                <td><input type="password" name="password" size="15" maxlength="20"/></td>
+                            </tr>
+                            <tr >
+                                <td colspan="2" align="center">
+                                    <br/>
+                                        <input class="button" type="submit" value="Login"/>
+                                        &nbsp;&nbsp;&nbsp;
+                                        <input class="button" type="reset" value="Reset"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
             </ui:define>
         </ui:composition>
     </h:body>

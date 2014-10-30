@@ -41,5 +41,62 @@ html, body  {
   font-family: 'Lobster Two';
   font-style: normal;
   font-weight: 400;
-  src: local('Lobster Two'), local('LobsterTwo'), url(Law3VVulBOoxyKPkrNsAaIbN6UDyHWBl620a-IRfuBk.woff) format('woff');
+  src: local('Lobster Two'), local('LobsterTwo'), url(styles/Law3VVulBOoxyKPkrNsAaIbN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
+
+fieldset {
+    /*
+	-moz-border-radius:5px;  
+	border-radius: 5px;  
+	-webkit-border-radius: 5px;
+	border: 1px solid #BFBFBF;
+    */
+    margin: auto;
+    padding: 20px;
+    width: 500px;
+    
+    background: -webkit-linear-gradient(90deg, #CCCCCC, #FFFFFF) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(90deg, #CCCCCC, #FFFFFF) repeat scroll 0 0 transparent;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cccccc', endColorstr='#FFFFFF');
+    border: 1px solid #AAAAAA;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
+}
+legend {
+    margin-left: 20px;
+	padding: 5px 10px;
+	/*border:1px solid #BFBFBF;*/
+	color: black;
+	text-align: left;
+    
+    background: -webkit-linear-gradient(90deg, #CCCCCC, #FFFFFF) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(90deg, #CCCCCC, #FFFFFF) repeat scroll 0 0 transparent;
+    background: gradient(90deg, #CCCCCC, #FFFFFF) repeat scroll 0 0 transparent;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cccccc', endColorstr='#FFFFFF');
+    border: 1px solid #AAAAAA;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    -moz-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+}
+div.panel {
+    margin: 20px auto 50px auto;
+    padding: 20px 25px 50px 25px;
+    /*
+    box-shadow: 5px 5px 5px #888;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #BFBFBF;
+    background-color: #F5F5F5;
+    */
+    background: -webkit-linear-gradient(90deg, #CCCCCC, #FFFFFF) repeat scroll 0 0 transparent;
+    background: -moz-linear-gradient(90deg, #CCCCCC, #FFFFFF) repeat scroll 0 0 transparent;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cccccc', endColorstr='#FFFFFF');
+    border: 1px solid #AAAAAA;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    border-radius: 10px 10px 10px 10px;
+    -webkit-box-shadow: 0 0 15px #AAAAAA;
+    -moz-box-shadow: 0 0 15px #AAAAAA;
+    box-shadow: 0 0 15px #AAAAAA;
 }
