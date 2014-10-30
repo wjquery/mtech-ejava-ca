@@ -30,32 +30,19 @@ public class TestServlet extends HttpServlet {
  
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        try (Connection conn = dataSource.getConnection()) {
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            try (Connection conn = dataSource.getConnection()) {
             try (PreparedStatement selStmt = conn.prepareStatement("select * from module")) {
                 //selStmt.setInt(1, 1);
                 ResultSet result = selStmt.executeQuery();
                 while (result.next()) {
-                    System.out.println(result.getString("Code") + ": " + result.getString("Name"));
+                    out.println(result.getString("Code") + ": " + result.getString("Name") + "<br/>");
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet TestServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet TestServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
         }
     }
 

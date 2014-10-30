@@ -1,0 +1,45 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 30, 2014, 11:57:44 AM
+    Author     : User
+*/
+html, body  {
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 5px;
+    color: black;
+    background-color: white;
+    font-family: Verdana, Arial, sans-serif;
+    font-size:12px;
+    background-image: url("images/ems_bg.jpg");
+    background-repeat: repeat-x;
+    margin:0 auto !important;
+}
+
+.footer {
+    width: 100%;
+    align: center;
+    background: url("images/footer.jpg") repeat-x scroll center top #EDEDED;
+    margin:0 auto !important;
+    padding: 0px 10px 0px 10px;
+}
+
+.applicationTitle {
+    /*font-family: tohama;
+	color : steelBlue;*/
+    font-size : 30pt;
+    color: #6A6A6A;
+    font: 40px/107px 'Lobster Two','Segoe UI',Arial,sans-serif;
+    text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.75);
+    text-align: center;
+}
+@font-face {
+  font-family: 'Lobster Two';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Lobster Two'), local('LobsterTwo'), url(Law3VVulBOoxyKPkrNsAaIbN6UDyHWBl620a-IRfuBk.woff) format('woff');
+}
