@@ -1,12 +1,65 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Facelet Title</title>
+        <meta http-equiv="Content-Type" 
+              content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="styles" name="main.css"/>
+        <title>Exam Management System</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <table style="width: 100%;">
+            <tr>
+                <td>
+                    <ui:insert name="header">
+                        <table width="800">
+                            <tr>
+                              <td width="110" height="110">
+                                  <a href="" title="Exam Management System">
+                                      <img src="#{facesContext.externalContext.requestContextPath}/resources/images/prms.jpg" height="110" border="0" style="position: absolute; top: 8px;"/>
+                                  </a>
+                              </td>
+                              <td valign="middle">
+                                <table>
+                                  <tr>
+                                      <td class="applicationTitle" align="center" width="80%">
+                                          Exam Management System
+                                      </td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                        </table>
+                    </ui:insert>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <ui:insert name="content">
+                        
+                    </ui:insert>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <ui:insert name="footer">
+                        <table class="footer">
+                            <tr>
+                                <td align="center" valign="middle">
+                                    <br/>
+                                    <font>
+                                        &nbsp; Copyright &copy; 2014 &nbsp; Institute of Systems Science &nbsp; Singapore. &nbsp; All Rights Reserved.
+                                    </font>
+                                    <br/>
+                                </td>
+                            </tr>
+                        </table>
+                    </ui:insert>
+                </td>
+            </tr>
+        </table>
     </h:body>
 </html>
 
