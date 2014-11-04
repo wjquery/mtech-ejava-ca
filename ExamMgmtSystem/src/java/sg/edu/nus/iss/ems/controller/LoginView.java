@@ -6,36 +6,42 @@
 package sg.edu.nus.iss.ems.controller;
 
 import java.io.Serializable;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
-import sg.edu.nus.iss.ems.entity.User;
-import sg.edu.nus.iss.ems.viewmodel.Credentials;
 
-/**
- *
- * @author Wenyan
- */
 @Named(value = "loginView")
-@SessionScoped
+@RequestScoped
 public class LoginView implements Serializable {
 
-    Credentials credentials;
-    private User user;
+    private String username;
+    private String password;
 
-    public void login() {
-        
+    public String login() {
+        System.out.println(username + ":" + password);
+        if ("admin".equals(username) && "password".equals(password))
+            return "lecturer/home?faces-redirect=true";
+        else if ("student".equals(username) && "password".equals(password))
+            return "student/home?faces-redirect=true";
+        else
+            return null;
     }
 
     public void logout() {
-        user = null;
     }
 
-
-    public boolean isLoggedIn() {
-       return user!=null;
+    public String getUsername() {
+        return username;
     }
 
-    public LoginView() {
+    public String getPassword() {
+        return password;
     }
-    
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
