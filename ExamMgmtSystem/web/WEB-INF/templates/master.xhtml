@@ -21,8 +21,8 @@
                             <table width="100%">
                                 <tr>
                                   <td width="110" height="110">
-                                      <a href="#{facesContext.externalContext.requestContextPath}/" title="Exam Management System">
-                                          <img src="#{facesContext.externalContext.requestContextPath}/resources/images/ems.png" height="110" border="0" style="position: absolute; top: 8px;"/>
+                                      <a href="#{facesContext.externalContext.applicationContextPath}/" title="Exam Management System">
+                                          <img src="#{facesContext.externalContext.applicationContextPath}/resources/images/ems.png" height="110" border="0" style="position: absolute; top: 8px;"/>
                                       </a>
                                   </td>
                                   <td valign="middle">
@@ -41,7 +41,9 @@
                 </tr>
                 <tr>
                     <td>
+                        <ui:insert name="menu"/>
                         <ui:insert name="content">
+                            
                         </ui:insert>
                     </td>
                 </tr>

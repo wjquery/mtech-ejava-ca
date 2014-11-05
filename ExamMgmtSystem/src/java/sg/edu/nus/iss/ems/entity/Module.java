@@ -46,8 +46,6 @@ public class Module implements Serializable {
     @Column(name = "QuestionCount")
     private Integer questionCount;
     @OneToMany(mappedBy = "moduleCode")
-    private List<ExamTemplate> examtemplateList;
-    @OneToMany(mappedBy = "moduleCode")
     private List<Question> questionList;
 
     public Module() {
@@ -79,15 +77,6 @@ public class Module implements Serializable {
 
     public void setQuestionCount(Integer questionCount) {
         this.questionCount = questionCount;
-    }
-
-    @XmlTransient
-    public List<ExamTemplate> getExamtemplateList() {
-        return examtemplateList;
-    }
-
-    public void setExamtemplateList(List<ExamTemplate> examtemplateList) {
-        this.examtemplateList = examtemplateList;
     }
 
     @XmlTransient
