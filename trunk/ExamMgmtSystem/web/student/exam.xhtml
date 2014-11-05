@@ -7,7 +7,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ems="http://xmlns.jcp.org/jsf/composite/ems">
     <h:head>
-        <title>Lecturer Home</title>
+        <title>My Exams</title>
     </h:head>
     <h:body>
         <ui:composition template="/WEB-INF/templates/master.xhtml">
@@ -15,12 +15,10 @@
                 <ems:menu/>
             </ui:define>
             <ui:define name="content">
-                Modules
-                <ui:repeat value="#{moduleView.modules()}" var="module">
-                    #{module.code} -- #{module.name}<br/>
-                </ui:repeat>
+                <p:panel style="height: 450px;">
+                    My Exams
+                </p:panel>
             </ui:define>
         </ui:composition>
     </h:body>
 </html>
-

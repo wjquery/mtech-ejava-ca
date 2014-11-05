@@ -6,20 +6,20 @@
 package sg.edu.nus.iss.ems.entity;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Set;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,7 +31,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
     @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
-    @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name")})
+    @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"),
+    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
+    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,11 +45,18 @@ public class User implements Serializable {
     @Size(max = 255)
     @Column(name = "Name")
     private String name;
-    @OneToMany(mappedBy = "userId")
-    private List<ExamInstance> examinstanceList;
-    @OneToMany(mappedBy = "createdBy")
-    private List<Question> questionList;
-
+    @Size(max = 255)
+    @Column(name = "Username")
+    private String username;
+    @Size(max = 255)
+    @Column(name = "Password")
+    private String password;
+    @ManyToMany
+    @JoinTable(name = "userrole", 
+            joinColumns = @JoinColumn(name = "UserId", referencedColumnName = "Id"),
+            inverseJoinColumns = @JoinColumn(name = "RoleId", referencedColumnName = "Id"))
+    private Set<Role> roles;
+    
     public User() {
     }
 
@@ -71,22 +80,28 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    @XmlTransient
-    public List<ExamInstance> getExaminstanceList() {
-        return examinstanceList;
+    public String getUsername() {
+        return username;
     }
 
-    public void setExaminstanceList(List<ExamInstance> examinstanceList) {
-        this.examinstanceList = examinstanceList;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    @XmlTransient
-    public List<Question> getQuestionList() {
-        return questionList;
+    public String getPassword() {
+        return password;
     }
 
-    public void setQuestionList(List<Question> questionList) {
-        this.questionList = questionList;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
     }
 
     @Override

@@ -61,9 +61,6 @@ public class Question implements Serializable {
     @Lob
     @Column(name = "Status")
     private byte[] status;
-    @JoinColumn(name = "Type", referencedColumnName = "Id")
-    @ManyToOne
-    private QuestionType type;
     @JoinColumn(name = "ModuleCode", referencedColumnName = "Code")
     @ManyToOne
     private Module moduleCode;
@@ -132,14 +129,6 @@ public class Question implements Serializable {
 
     public void setStatus(byte[] status) {
         this.status = status;
-    }
-
-    public QuestionType getType() {
-        return type;
-    }
-
-    public void setType(QuestionType type) {
-        this.type = type;
     }
 
     public Module getModuleCode() {
