@@ -48,23 +48,29 @@ public class Question implements Serializable {
     private Integer qid;
     @Column(name = "Version")
     private Integer version;
-    @Column(name = "CreatedOn")
+    
+    @Column(name = "Created_On")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdOn;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "Mark")
     private Double mark;
+    
     @Lob
     @Size(max = 65535)
-    @Column(name = "QuestionText")
+    @Column(name = "Question_Text")
     private String questionText;
+    
     @Lob
     @Column(name = "Status")
     private byte[] status;
-    @JoinColumn(name = "ModuleCode", referencedColumnName = "Code")
+    
+    @JoinColumn(name = "Module_Code", referencedColumnName = "Code")
     @ManyToOne
     private Module moduleCode;
-    @JoinColumn(name = "CreatedBy", referencedColumnName = "Id")
+    
+    @JoinColumn(name = "Created_By", referencedColumnName = "Id")
     @ManyToOne
     private User createdBy;
 

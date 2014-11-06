@@ -7,10 +7,12 @@ package sg.edu.nus.iss.ems.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -28,10 +30,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "module")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Module.findAll", query = "SELECT m FROM Module m"),
-    @NamedQuery(name = "Module.findByCode", query = "SELECT m FROM Module m WHERE m.code = :code"),
-    @NamedQuery(name = "Module.findByName", query = "SELECT m FROM Module m WHERE m.name = :name"),
-    @NamedQuery(name = "Module.findByQuestionCount", query = "SELECT m FROM Module m WHERE m.questionCount = :questionCount")})
+    @NamedQuery(name = "Module.findAll", query = "SELECT m FROM Module m WHERE m.status != 0"),
+    @NamedQuery(name = "Module.findByCode", query = "SELECT m FROM Module m WHERE m.code = :code and m.status != 0"),
+    @NamedQuery(name = "Module.findByName", query = "SELECT m FROM Module m WHERE m.name = :name and m.status != 0"),
+    @NamedQuery(name = "Module.findByQuestionCount", query = "SELECT m FROM Module m WHERE m.questionCount = :questionCount and m.status != 0")})
 public class Module implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -43,10 +45,17 @@ public class Module implements Serializable {
     @Size(max = 100)
     @Column(name = "Name")
     private String name;
-    @Column(name = "QuestionCount")
+    
+    private Integer status;
+    
+    @Column(name = "Question_Count")
     private Integer questionCount;
+    
     @OneToMany(mappedBy = "moduleCode")
     private List<Question> questionList;
+    
+    @ManyToMany(mappedBy = "modules")
+    private Set<User> users;
 
     public Module() {
     }
@@ -88,6 +97,23 @@ public class Module implements Serializable {
         this.questionList = questionList;
     }
 
+    @XmlTransient
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+    
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+    
+    public Integer getStatus() {
+        return status;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -27,10 +27,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "role")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r"),
-    @NamedQuery(name = "Role.findById", query = "SELECT r FROM Role r WHERE r.id = :id"),
-    @NamedQuery(name = "Role.findByName", query = "SELECT r FROM Role r WHERE r.name = :name"),
-    @NamedQuery(name = "Role.findByDescription", query = "SELECT r FROM Role r WHERE r.description = :description")})
+    @NamedQuery(name = "Role.findAll", query = "SELECT r FROM Role r WHERE r.status != 0"),
+    @NamedQuery(name = "Role.findById", query = "SELECT r FROM Role r WHERE r.id = :id AND r.status != 0"),
+    @NamedQuery(name = "Role.findByName", query = "SELECT r FROM Role r WHERE r.name = :name AND r.status != 0"),
+    @NamedQuery(name = "Role.findByDescription", query = "SELECT r FROM Role r WHERE r.description = :description AND r.status != 0")})
 public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,6 +44,9 @@ public class Role implements Serializable {
     @Size(max = 255)
     @Column(name = "Description")
     private String description;
+    
+    private Integer status;
+    
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
@@ -86,6 +89,14 @@ public class Role implements Serializable {
         this.users = users;
     }
 
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+    
+    public Integer getStatus() {
+        return status;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -18,174 +18,6 @@ USE `ems`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `examinstance`
---
-
-DROP TABLE IF EXISTS `examinstance`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `examinstance` (
-  `Id` int(11) NOT NULL,
-  `UserId` varchar(100) DEFAULT NULL,
-  `ExamSessionId` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `instance_uid_idx` (`UserId`),
-  KEY `instance_sid_idx` (`ExamSessionId`),
-  CONSTRAINT `instance_sid` FOREIGN KEY (`ExamSessionId`) REFERENCES `examsession` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `instance_uid` FOREIGN KEY (`UserId`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `examinstance`
---
-
-LOCK TABLES `examinstance` WRITE;
-/*!40000 ALTER TABLE `examinstance` DISABLE KEYS */;
-/*!40000 ALTER TABLE `examinstance` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `examsection`
---
-
-DROP TABLE IF EXISTS `examsection`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `examsection` (
-  `Id` int(11) NOT NULL,
-  `TemplateId` int(11) DEFAULT NULL,
-  `Name` varchar(100) DEFAULT NULL,
-  `TotalMarks` double DEFAULT NULL,
-  `Type` varchar(1) DEFAULT NULL COMMENT 'A or M',
-  PRIMARY KEY (`Id`),
-  KEY `section_template_id_idx` (`TemplateId`),
-  CONSTRAINT `section_template_id` FOREIGN KEY (`TemplateId`) REFERENCES `examtemplate` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `examsection`
---
-
-LOCK TABLES `examsection` WRITE;
-/*!40000 ALTER TABLE `examsection` DISABLE KEYS */;
-/*!40000 ALTER TABLE `examsection` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `examsession`
---
-
-DROP TABLE IF EXISTS `examsession`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `examsession` (
-  `Id` int(11) NOT NULL,
-  `TemplateId` int(11) DEFAULT NULL,
-  `Date` date DEFAULT NULL,
-  `StartTime` time DEFAULT NULL,
-  `Duration` int(11) DEFAULT NULL,
-  `Location` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `session_template_id_idx` (`TemplateId`),
-  CONSTRAINT `session_template_id` FOREIGN KEY (`TemplateId`) REFERENCES `examtemplate` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `examsession`
---
-
-LOCK TABLES `examsession` WRITE;
-/*!40000 ALTER TABLE `examsession` DISABLE KEYS */;
-/*!40000 ALTER TABLE `examsession` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `examtemplate`
---
-
-DROP TABLE IF EXISTS `examtemplate`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `examtemplate` (
-  `Id` int(11) NOT NULL,
-  `ModuleCode` varchar(100) DEFAULT NULL,
-  `CreatedOn` datetime DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `template_module_code_idx` (`ModuleCode`),
-  CONSTRAINT `template_module_code` FOREIGN KEY (`ModuleCode`) REFERENCES `module` (`Code`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `examtemplate`
---
-
-LOCK TABLES `examtemplate` WRITE;
-/*!40000 ALTER TABLE `examtemplate` DISABLE KEYS */;
-/*!40000 ALTER TABLE `examtemplate` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `instancequestion`
---
-
-DROP TABLE IF EXISTS `instancequestion`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `instancequestion` (
-  `Id` int(11) NOT NULL,
-  `InstanceSectionId` int(11) DEFAULT NULL,
-  `QuestionId` int(11) DEFAULT NULL,
-  `Answer` text,
-  PRIMARY KEY (`Id`),
-  KEY `instanceq_sid_idx` (`InstanceSectionId`),
-  KEY `instanceq_qid_idx` (`QuestionId`),
-  CONSTRAINT `instanceq_qid` FOREIGN KEY (`QuestionId`) REFERENCES `question` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `instanceq_sid` FOREIGN KEY (`InstanceSectionId`) REFERENCES `instancesection` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `instancequestion`
---
-
-LOCK TABLES `instancequestion` WRITE;
-/*!40000 ALTER TABLE `instancequestion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `instancequestion` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `instancesection`
---
-
-DROP TABLE IF EXISTS `instancesection`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `instancesection` (
-  `Id` int(11) NOT NULL,
-  `InstanceId` int(11) DEFAULT NULL,
-  `Name` varchar(100) DEFAULT NULL,
-  `TotalMarks` double DEFAULT NULL,
-  `Type` varchar(1) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `instancesection_iid_idx` (`InstanceId`),
-  CONSTRAINT `instancesection_iid` FOREIGN KEY (`InstanceId`) REFERENCES `examinstance` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `instancesection`
---
-
-LOCK TABLES `instancesection` WRITE;
-/*!40000 ALTER TABLE `instancesection` DISABLE KEYS */;
-/*!40000 ALTER TABLE `instancesection` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `module`
 --
 
@@ -193,9 +25,10 @@ DROP TABLE IF EXISTS `module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `module` (
-  `Code` varchar(100) NOT NULL,
-  `Name` varchar(100) DEFAULT NULL,
-  `QuestionCount` int(11) DEFAULT '0',
+  `Code` varchar(255) NOT NULL,
+  `Name` varchar(255) DEFAULT NULL,
+  `Question_Count` int(11) DEFAULT '0',
+  `Status` int(11) DEFAULT '1',
   PRIMARY KEY (`Code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -206,7 +39,7 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES ('CS1101','Introduction to Programming',0),('CS1102','Data Structure and Algorithm',0),('CS2101','Computer Organization',0);
+INSERT INTO `module` VALUES ('CS1101','Introduction to Programming',0,1),('CS1102','Data Structure and Algorithm',0,1),('CS2101','Computer Organization',0,1),('CS2102','Software Engineering',0,1),('MA1105','Discrete Mathematics',0,1);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -218,24 +51,24 @@ DROP TABLE IF EXISTS `question`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `question` (
-  `Id` int(11) NOT NULL,
-  `ModuleCode` varchar(100) DEFAULT NULL,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Module_Code` varchar(255) DEFAULT NULL,
   `QID` int(11) DEFAULT NULL,
-  `Version` int(11) DEFAULT NULL,
+  `Version` int(11) DEFAULT '1',
   `Type` int(11) DEFAULT NULL,
-  `CreatedOn` datetime DEFAULT NULL,
-  `CreatedBy` varchar(100) DEFAULT NULL,
+  `Created_On` datetime DEFAULT NULL,
+  `Created_By` int(11) DEFAULT NULL,
   `Mark` double DEFAULT NULL,
-  `QuestionText` text,
-  `Status` binary(1) DEFAULT '0',
+  `Question_Text` text,
+  `Status` binary(1) DEFAULT NULL,
   PRIMARY KEY (`Id`),
-  KEY `module_code_idx` (`ModuleCode`),
-  KEY `created_by_idx` (`CreatedBy`),
-  KEY `question_type_idx` (`Type`),
-  CONSTRAINT `created_by` FOREIGN KEY (`CreatedBy`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `module_code` FOREIGN KEY (`ModuleCode`) REFERENCES `module` (`Code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `question_type` FOREIGN KEY (`Type`) REFERENCES `questiontype` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `q_mcode_idx` (`Module_Code`),
+  KEY `q_type_idx` (`Type`),
+  KEY `q_uid_idx` (`Created_By`),
+  CONSTRAINT `q_mcode` FOREIGN KEY (`Module_Code`) REFERENCES `module` (`Code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `q_type` FOREIGN KEY (`Type`) REFERENCES `question_type` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `q_uid` FOREIGN KEY (`Created_By`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,59 +77,61 @@ CREATE TABLE `question` (
 
 LOCK TABLES `question` WRITE;
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
+INSERT INTO `question` VALUES (1,'CS1101',1,1,1,NULL,NULL,1,NULL,NULL);
 /*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `questiontag`
+-- Table structure for table `question_tag`
 --
 
-DROP TABLE IF EXISTS `questiontag`;
+DROP TABLE IF EXISTS `question_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `questiontag` (
-  `Id` int(11) NOT NULL,
-  `QuestionId` int(11) DEFAULT NULL,
-  `TagId` int(11) DEFAULT NULL,
+CREATE TABLE `question_tag` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_id` int(11) DEFAULT NULL,
+  `tag_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`),
-  KEY `questiontag_qid_idx` (`QuestionId`),
-  KEY `questiontag_tid_idx` (`TagId`),
-  CONSTRAINT `questiontag_qid` FOREIGN KEY (`QuestionId`) REFERENCES `question` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `questiontag_tid` FOREIGN KEY (`TagId`) REFERENCES `subjecttag` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  KEY `qt_qid_idx` (`question_id`),
+  KEY `qt_tid_idx` (`tag_id`),
+  CONSTRAINT `qt_qid` FOREIGN KEY (`question_id`) REFERENCES `question` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `qt_tid` FOREIGN KEY (`tag_id`) REFERENCES `subject_tag` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `questiontag`
+-- Dumping data for table `question_tag`
 --
 
-LOCK TABLES `questiontag` WRITE;
-/*!40000 ALTER TABLE `questiontag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `questiontag` ENABLE KEYS */;
+LOCK TABLES `question_tag` WRITE;
+/*!40000 ALTER TABLE `question_tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `question_tag` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `questiontype`
+-- Table structure for table `question_type`
 --
 
-DROP TABLE IF EXISTS `questiontype`;
+DROP TABLE IF EXISTS `question_type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `questiontype` (
-  `Id` int(11) NOT NULL,
-  `Type` varchar(45) DEFAULT NULL,
-  `Description` varchar(45) DEFAULT NULL,
+CREATE TABLE `question_type` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Type` varchar(255) DEFAULT NULL,
+  `Description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `questiontype`
+-- Dumping data for table `question_type`
 --
 
-LOCK TABLES `questiontype` WRITE;
-/*!40000 ALTER TABLE `questiontype` DISABLE KEYS */;
-/*!40000 ALTER TABLE `questiontype` ENABLE KEYS */;
+LOCK TABLES `question_type` WRITE;
+/*!40000 ALTER TABLE `question_type` DISABLE KEYS */;
+INSERT INTO `question_type` VALUES (1,'MCQS','Multiple choice single answer'),(2,'MCQM','Multiple choice multiple answer'),(3,'Essay','Written answer'),(4,'Multipart','One or more MCQ or written');
+/*!40000 ALTER TABLE `question_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -307,11 +142,12 @@ DROP TABLE IF EXISTS `role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `role` (
-  `Id` int(11) NOT NULL,
-  `Name` varchar(100) DEFAULT NULL,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
+  `Status` int(11) DEFAULT '1',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -320,87 +156,33 @@ CREATE TABLE `role` (
 
 LOCK TABLES `role` WRITE;
 /*!40000 ALTER TABLE `role` DISABLE KEYS */;
-INSERT INTO `role` VALUES (1,'Admin','Administrator'),(2,'Lecturer','Lecturer'),(3,'Student','Student');
+INSERT INTO `role` VALUES (1,'Administrator','Administrator',1),(2,'Lecturer','Lecturer',1),(3,'Student','Student',1);
 /*!40000 ALTER TABLE `role` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `sectionquestion`
+-- Table structure for table `subject_tag`
 --
 
-DROP TABLE IF EXISTS `sectionquestion`;
+DROP TABLE IF EXISTS `subject_tag`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sectionquestion` (
-  `Id` int(11) NOT NULL,
-  `SectionId` int(11) DEFAULT NULL,
-  `QuestionId` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `secionquestion_sid_idx` (`SectionId`),
-  KEY `sectionquestion_qid_idx` (`QuestionId`),
-  CONSTRAINT `secionquestion_sid` FOREIGN KEY (`SectionId`) REFERENCES `examsection` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `sectionquestion_qid` FOREIGN KEY (`QuestionId`) REFERENCES `question` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sectionquestion`
---
-
-LOCK TABLES `sectionquestion` WRITE;
-/*!40000 ALTER TABLE `sectionquestion` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sectionquestion` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `sectiontag`
---
-
-DROP TABLE IF EXISTS `sectiontag`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `sectiontag` (
-  `Id` int(11) NOT NULL,
-  `SectionId` int(11) DEFAULT NULL,
-  `TagId` int(11) DEFAULT NULL,
-  PRIMARY KEY (`Id`),
-  KEY `sectiontag_sid_idx` (`SectionId`),
-  KEY `sectiontag_tid_idx` (`TagId`),
-  CONSTRAINT `sectiontag_sid` FOREIGN KEY (`SectionId`) REFERENCES `examsection` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `sectiontag_tid` FOREIGN KEY (`TagId`) REFERENCES `subjecttag` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `sectiontag`
---
-
-LOCK TABLES `sectiontag` WRITE;
-/*!40000 ALTER TABLE `sectiontag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `sectiontag` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `subjecttag`
---
-
-DROP TABLE IF EXISTS `subjecttag`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `subjecttag` (
-  `Id` int(11) NOT NULL,
-  `Name` varchar(100) DEFAULT NULL,
+CREATE TABLE `subject_tag` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Tag` varchar(255) DEFAULT NULL,
+  `Status` int(11) DEFAULT '1',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `subjecttag`
+-- Dumping data for table `subject_tag`
 --
 
-LOCK TABLES `subjecttag` WRITE;
-/*!40000 ALTER TABLE `subjecttag` DISABLE KEYS */;
-/*!40000 ALTER TABLE `subjecttag` ENABLE KEYS */;
+LOCK TABLES `subject_tag` WRITE;
+/*!40000 ALTER TABLE `subject_tag` DISABLE KEYS */;
+INSERT INTO `subject_tag` VALUES (1,'Java',1),(2,'Algorithm',1),(3,'Data Structure',1),(4,'C#',1),(5,'Software Engineering',1),(6,'Testing',1),(7,'Peer Review',1),(8,'ISO9001',1),(9,'Software Quality Management',1),(10,'Networking',1),(11,'Software Architecture',1),(12,'Business Analysis',1),(13,'System Analysis',1),(14,'Software Requirement Engineering',1),(15,'Software Project Management',1),(16,'Python',1);
+/*!40000 ALTER TABLE `subject_tag` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -411,12 +193,13 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
-  `Id` varchar(100) NOT NULL,
-  `Name` varchar(255) DEFAULT NULL,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Username` varchar(255) DEFAULT NULL,
   `Password` varchar(255) DEFAULT NULL,
+  `Name` varchar(255) DEFAULT NULL,
+  `Status` int(11) DEFAULT '1',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -425,65 +208,66 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('1','Administrator','admin','password'),('2','Student','student','password');
+INSERT INTO `user` VALUES (1,'admin','password','Tan Ah Kow',1),(2,'lecturer','password','Lim Ah Thet',1),(3,'student','password','Chau Ah Kua',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `usermodule`
+-- Table structure for table `user_module`
 --
 
-DROP TABLE IF EXISTS `usermodule`;
+DROP TABLE IF EXISTS `user_module`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `usermodule` (
-  `Id` int(11) NOT NULL,
-  `UserId` varchar(100) DEFAULT NULL,
-  `ModuleCode` varchar(100) DEFAULT NULL,
+CREATE TABLE `user_module` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `User_Id` int(11) DEFAULT NULL,
+  `Module_Code` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`Id`),
-  KEY `usermodule_uid_idx` (`UserId`),
-  KEY `usermodule_mid_idx` (`ModuleCode`),
-  CONSTRAINT `usermodule_mid` FOREIGN KEY (`ModuleCode`) REFERENCES `module` (`Code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `usermodule_uid` FOREIGN KEY (`UserId`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `user_uid_idx` (`User_Id`),
+  KEY `module_mcode_idx` (`Module_Code`),
+  CONSTRAINT `um_uid` FOREIGN KEY (`User_Id`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `um_mcode` FOREIGN KEY (`Module_Code`) REFERENCES `module` (`Code`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `usermodule`
+-- Dumping data for table `user_module`
 --
 
-LOCK TABLES `usermodule` WRITE;
-/*!40000 ALTER TABLE `usermodule` DISABLE KEYS */;
-/*!40000 ALTER TABLE `usermodule` ENABLE KEYS */;
+LOCK TABLES `user_module` WRITE;
+/*!40000 ALTER TABLE `user_module` DISABLE KEYS */;
+INSERT INTO `user_module` VALUES (1,2,'CS1101'),(2,2,'CS1102');
+/*!40000 ALTER TABLE `user_module` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `userrole`
+-- Table structure for table `user_role`
 --
 
-DROP TABLE IF EXISTS `userrole`;
+DROP TABLE IF EXISTS `user_role`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `userrole` (
-  `Id` int(11) NOT NULL,
-  `UserId` varchar(100) NOT NULL,
-  `RoleId` int(11) NOT NULL,
+CREATE TABLE `user_role` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `User_Id` int(11) DEFAULT NULL,
+  `Role_Id` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`),
-  KEY `user_id_idx` (`UserId`),
-  KEY `role_id_idx` (`RoleId`),
-  CONSTRAINT `role_id` FOREIGN KEY (`RoleId`) REFERENCES `role` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `user_id` FOREIGN KEY (`UserId`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  KEY `user_uid_idx` (`User_Id`),
+  KEY `role_rid_idx` (`Role_Id`),
+  CONSTRAINT `ur_uid` FOREIGN KEY (`User_Id`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `ur_rid` FOREIGN KEY (`Role_Id`) REFERENCES `role` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `userrole`
+-- Dumping data for table `user_role`
 --
 
-LOCK TABLES `userrole` WRITE;
-/*!40000 ALTER TABLE `userrole` DISABLE KEYS */;
-INSERT INTO `userrole` VALUES (1,'1',1),(2,'1',2),(3,'1',3),(4,'2',3);
-/*!40000 ALTER TABLE `userrole` ENABLE KEYS */;
+LOCK TABLES `user_role` WRITE;
+/*!40000 ALTER TABLE `user_role` DISABLE KEYS */;
+INSERT INTO `user_role` VALUES (1,1,1),(2,1,2),(3,1,3),(4,2,2),(5,3,3);
+/*!40000 ALTER TABLE `user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -495,4 +279,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-11-06  1:07:58
+-- Dump completed on 2014-11-07  0:12:28
