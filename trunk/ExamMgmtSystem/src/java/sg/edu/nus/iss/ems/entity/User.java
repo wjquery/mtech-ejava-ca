@@ -6,6 +6,7 @@
 package sg.edu.nus.iss.ems.entity;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -29,11 +30,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "user")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
-    @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id"),
-    @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name"),
-    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username"),
-    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password")})
+    @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u WHERE u.status != 0"),
+    @NamedQuery(name = "User.findById", query = "SELECT u FROM User u WHERE u.id = :id AND u.status != 0"),
+    @NamedQuery(name = "User.findByName", query = "SELECT u FROM User u WHERE u.name = :name AND u.status != 0"),
+    @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username AND u.status != 0"),
+    @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password AND u.status != 0")})
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -41,7 +42,7 @@ public class User implements Serializable {
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "Id")
-    private String id;
+    private Integer id;
     @Size(max = 255)
     @Column(name = "Name")
     private String name;
@@ -51,24 +52,33 @@ public class User implements Serializable {
     @Size(max = 255)
     @Column(name = "Password")
     private String password;
+    
+    private Integer status;
+    
     @ManyToMany
-    @JoinTable(name = "userrole", 
-            joinColumns = @JoinColumn(name = "UserId", referencedColumnName = "Id"),
-            inverseJoinColumns = @JoinColumn(name = "RoleId", referencedColumnName = "Id"))
+    @JoinTable(name = "user_role", 
+            joinColumns = @JoinColumn(name = "User_Id", referencedColumnName = "Id"),
+            inverseJoinColumns = @JoinColumn(name = "Role_Id", referencedColumnName = "Id"))
     private Set<Role> roles;
+    
+    @ManyToMany
+    @JoinTable(name = "user_module", 
+            joinColumns = @JoinColumn(name = "User_Id", referencedColumnName = "Id"),
+            inverseJoinColumns = @JoinColumn(name = "Module_Code", referencedColumnName = "Code"))
+    private List<Module> modules;
     
     public User() {
     }
 
-    public User(String id) {
+    public User(Integer id) {
         this.id = id;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -103,7 +113,23 @@ public class User implements Serializable {
     public Set<Role> getRoles() {
         return roles;
     }
+    
+    public void setModules(List<Module> modules) {
+        this.modules = modules;
+    }
 
+    public List<Module> getModules() {
+        return modules;
+    }
+    
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+    
+    public Integer getStatus() {
+        return status;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -16,7 +16,22 @@
             </ui:define>
             <ui:define name="content">
                 <p:panel style="height: 450px;">
-                    User Management
+                    <p:dataTable var="u" value="#{userMgmtView.users()}" sortMode="multiple" style="width: 500px;">
+                        <f:facet name="header">
+                            User Management
+                        </f:facet>
+                        <p:column headerText="Id" sortBy="#{u.id}">
+                            <h:outputText value="#{u.id}" />
+                        </p:column>
+
+                        <p:column headerText="Username" sortBy="#{u.username}">
+                            <h:outputText value="#{u.username}" />
+                        </p:column>
+
+                        <p:column headerText="Full Name" sortBy="#{u.name}">
+                            <h:outputText value="#{u.name}" />
+                        </p:column>
+                    </p:dataTable>
                 </p:panel>
             </ui:define>
         </ui:composition>

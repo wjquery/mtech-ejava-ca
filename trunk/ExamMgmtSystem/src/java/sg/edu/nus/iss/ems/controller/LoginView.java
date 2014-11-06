@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import sg.edu.nus.iss.ems.entity.Module;
 import sg.edu.nus.iss.ems.entity.Role;
 import sg.edu.nus.iss.ems.entity.User;
 import sg.edu.nus.iss.ems.service.UserBean;
@@ -28,6 +29,9 @@ public class LoginView implements Serializable {
 
     public String login() {
         loginUser = userBean.login(username, password);
+        for (Module m : loginUser.getModules()) {
+            System.out.println(m);
+        }
         if (loginUser != null) {
             Set<Role> roles = loginUser.getRoles();
             for (Role role : roles) {
