@@ -6,19 +6,32 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ems="http://xmlns.jcp.org/jsf/composite/ems">
-    <h:head>
-        <title>Exam Paper Management</title>
-    </h:head>
+    <h:head/>
     <h:body>
         <ui:composition template="/WEB-INF/templates/master.xhtml">
+            <ui:insert name="title">
+                Exam Question Management
+            </ui:insert>
             <ui:define name="menu">
                 <ems:menu/>
             </ui:define>
             <ui:define name="content">
-                <p:panel style="height: 450px;">
-                    Exam Paper Management
-                </p:panel>
+                <h:form>
+                    <p:panel style="height: 450px;">
+                        <p:messages/>
+                        
+                        <p:outputLabel for="module" value="Modules" />
+                        <p:selectOneMenu id="module" value="#{moduleView.module}">
+                            <f:selectItems value="#{moduleView.modules()}" 
+                                           var="m"
+                                           itemLabel="#{m.name}"
+                                           itemValue="#{m.code}"/>
+                            <f:ajax execute="@form" render="@form" />
+                        </p:selectOneMenu>
+                    </p:panel>
+                </h:form>
             </ui:define>
         </ui:composition>
     </h:body>
 </html>
+

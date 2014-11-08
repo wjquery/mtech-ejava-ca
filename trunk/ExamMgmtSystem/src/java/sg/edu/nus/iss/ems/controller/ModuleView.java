@@ -17,7 +17,7 @@ public class ModuleView implements Serializable {
     @EJB ModuleBean moduleBean;
     
     private String module;
-
+    
     public String getModule() {
         return module;
     }
@@ -29,7 +29,15 @@ public class ModuleView implements Serializable {
     public List<Module> modules() {
         return moduleBean.findAll();
     }
-    
+
+    public ModuleBean getModuleBean() {
+        return moduleBean;
+    }
+
+    public void setModuleBean(ModuleBean moduleBean) {
+        this.moduleBean = moduleBean;
+    }
+
     public Map<String, String> moduleList() {
         List<Module> modules = moduleBean.findAll();
         Map<String, String> moduleList = new HashMap<String, String>();
