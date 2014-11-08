@@ -22,7 +22,7 @@ public abstract class GenericDataAccessService<T> {
     }
     
     public List<T> findAll() {
-        return em.createQuery("from " + getClz().getSimpleName() + " e", getClz()).getResultList();
+        return em.createQuery("select e from " + getClz().getSimpleName() + " e", getClz()).getResultList();
     }
     
     public void create(T entity) {

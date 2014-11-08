@@ -1,9 +1,7 @@
 package sg.edu.nus.iss.ems.controller;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
