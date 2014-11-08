@@ -6,19 +6,59 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ems="http://xmlns.jcp.org/jsf/composite/ems">
-    <h:head>
-        <title>Exam Question Management</title>
-    </h:head>
+    <h:head/>
     <h:body>
         <ui:composition template="/WEB-INF/templates/master.xhtml">
+            <ui:insert name="title">
+                Exam Question Management
+            </ui:insert>
             <ui:define name="menu">
                 <ems:menu/>
             </ui:define>
             <ui:define name="content">
-                <p:panel style="height: 450px;">
-                    Exam Question Management
-                </p:panel>
+                <h:form>
+                    <p:panel style="height: 450px;">
+                        <p:messages/>
+                        
+                        <p:outputLabel for="module" value="Modules" />
+                        <p:selectOneMenu id="module" value="#{questionBankView.module}">
+                            <f:selectItems value="#{moduleView.modules()}" 
+                                           var="m"
+                                           itemLabel="#{m.name}"
+                                           itemValue="#{m.code}"/>
+                            <f:ajax execute="@form" render="@form" />
+                        </p:selectOneMenu>
+                        
+                        <p:outputLabel for="module" value="Selected module : #{questionBankView.module}" />
+                        
+                        <ul>
+                            <ui:repeat var="qn" value="#{questionBankView.findQuestionsByModules()}">
+                                <li>#{qn.mark}</li>
+                            </ui:repeat>
+                        </ul>
+                        
+                        <p:dataTable var="qn" value="#{questionBankView.findQuestionsByModules()}" sortMode="multiple" style="width: 500px;">
+                            <f:facet name="header">
+                                Question Management
+                            </f:facet>
+                            <p:column headerText="Id" sortBy="#{qn.qid}">
+                                <h:outputText value="#{qn.qid}" />
+                            </p:column>
+
+                            <p:column headerText="Mark" sortBy="#{qn.mark}">
+                                <h:outputText value="#{qn.mark}" />
+                            </p:column>
+
+                            <p:column headerText="Question" sortBy="#{qn.questionText}">
+                                <h:outputText value="#{qn.questionText}" />
+                            </p:column>
+                        </p:dataTable>
+               
+                        
+                    </p:panel>
+                </h:form>
             </ui:define>
         </ui:composition>
     </h:body>
 </html>
+

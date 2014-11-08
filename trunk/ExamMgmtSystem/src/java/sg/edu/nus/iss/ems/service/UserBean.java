@@ -22,9 +22,9 @@ public class UserBean extends GenericDataAccessService<User> {
     }
     
     public User authenticate(String username, String password) {
-        TypedQuery<User> q = em.createQuery(AUTH, User.class);
-        q.setParameter("username", username);
-        q.setParameter("password", password);
+        TypedQuery<User> q = em.createQuery(AUTH, User.class)
+                .setParameter("username", username)
+                .setParameter("password", password);
         
         User user = null;
         try {

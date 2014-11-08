@@ -37,13 +37,5 @@ public class ModuleView implements Serializable {
     public void setModuleBean(ModuleBean moduleBean) {
         this.moduleBean = moduleBean;
     }
-
-    public Map<String, String> moduleList() {
-        List<Module> modules = moduleBean.findAll();
-        Map<String, String> moduleList = new HashMap<String, String>();
-        for (Module module : modules) {
-            moduleList.put(module.getCode() + " " +  module.getName(), module.getCode());
-        }
-        return moduleList;
-    }
+    
 }
