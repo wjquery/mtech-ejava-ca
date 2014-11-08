@@ -1,12 +1,17 @@
-package sg.edu.nus.iss.ems.service;
+package sg.edu.nus.iss.ems.service.impl;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 public abstract class GenericDataAccessService<T> {
+    
+    private static final Logger LOGGER = Logger.getLogger(GenericDataAccessService.class.getName());
     
     @PersistenceContext
     protected EntityManager em;
@@ -41,5 +46,15 @@ public abstract class GenericDataAccessService<T> {
     
     public void delete(T entity) {
         em.remove(entity);
+    }
+    
+    protected T unique(TypedQuery<T> query) {
+        T entity = null;
+        try {
+            entity = query.getSingleResult();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
+        return entity;
     }
 }

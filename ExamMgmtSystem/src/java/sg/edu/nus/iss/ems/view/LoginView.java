@@ -1,19 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package sg.edu.nus.iss.ems.controller;
+package sg.edu.nus.iss.ems.view;
 
 import java.io.Serializable;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import sg.edu.nus.iss.ems.entity.Module;
 import sg.edu.nus.iss.ems.entity.Role;
 import sg.edu.nus.iss.ems.entity.User;
-import sg.edu.nus.iss.ems.service.UserBean;
+import sg.edu.nus.iss.ems.service.UserAccountService;
 
 @Named(value = "loginView")
 @SessionScoped
@@ -25,7 +21,7 @@ public class LoginView implements Serializable {
     private Integer menuType;
     
     @EJB
-    private UserBean userBean;
+    private UserAccountService userBean;
 
     public String login() {
         loginUser = userBean.authenticate(username, password);
@@ -48,7 +44,7 @@ public class LoginView implements Serializable {
     }
 
     public String logout() {
-        loginUser = null;
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return "/index?faces-redirect=true";
     }
 

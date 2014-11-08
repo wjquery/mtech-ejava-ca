@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.ems.service;
+package sg.edu.nus.iss.ems.service.impl;
 
 import java.util.List;
 import javax.ejb.Stateless;

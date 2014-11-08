@@ -1,11 +1,11 @@
-package sg.edu.nus.iss.ems.controller;
+package sg.edu.nus.iss.ems.view;
 
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import sg.edu.nus.iss.ems.entity.Question;
-import sg.edu.nus.iss.ems.service.QuestionBean;
+import sg.edu.nus.iss.ems.service.impl.QuestionBean;
 
 @RequestScoped
 @Named
