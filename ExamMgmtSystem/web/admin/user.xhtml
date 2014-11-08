@@ -17,9 +17,11 @@
             </ui:define>
             <ui:define name="content">
                 <h:form>
-                    <p:panel style="height: 450px;">
-                        <p:dataTable var="u" value="#{userMgmtView.users()}" style="width: 80%; margin: auto;"
-                                     selectionMode="multiple"
+                    <p:panel style="min-height: 450px; padding: 5em 10em;">
+                        <p:dataTable id="datalist" var="u" value="#{userMgmtView.users}" 
+                                     style="width: 80%; margin: auto;"
+                                     selectionMode="single" 
+                                     selection="#{userMgmtView.selectedUser}"
                                      paginator="true"
                                      rowKey="#{u.id}"
                                      rows="10"
@@ -45,12 +47,12 @@
                             
                             <p:column headerText="Action">
                                 <p:commandButton id="editButton"   icon="ui-icon-pencil" value="#{msg['btn.edit']}" update="@form" oncomplete="PF('UserEditDialog').show()"/>
-                                <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{msg['btn.delete']}" update="@form"/>
                             </p:column>
 
                             <f:facet name="footer">
                                 <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{msg['btn.create']}" update="@form" oncomplete="PF('UserCreateDialog').show()"/>
                                 <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{msg['btn.view']}" update="@form" oncomplete="PF('UserViewDialog').show()" disabled="true"/>
+                                <p:commandButton id="deleteButton" icon="ui-icon-trash" value="#{msg['btn.delete']}" actionListener="#{userMgmtView.delete()}" update=":growl,datalist" disabled="#{empty userMgmtView.selectedUser}"/>
                             </f:facet>
                         </p:dataTable>
                     </p:panel>
