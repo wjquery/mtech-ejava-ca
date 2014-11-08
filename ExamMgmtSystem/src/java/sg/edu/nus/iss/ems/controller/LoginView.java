@@ -28,7 +28,7 @@ public class LoginView implements Serializable {
     private UserBean userBean;
 
     public String login() {
-        loginUser = userBean.login(username, password);
+        loginUser = userBean.authenticate(username, password);
         for (Module m : loginUser.getModules()) {
             System.out.println(m);
         }
