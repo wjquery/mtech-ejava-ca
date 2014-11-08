@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.ems.controller;
+package sg.edu.nus.iss.ems.view;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,7 +6,7 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import sg.edu.nus.iss.ems.entity.Module;
-import sg.edu.nus.iss.ems.service.ModuleBean;
+import sg.edu.nus.iss.ems.service.impl.ModuleBean;
 
 @ViewScoped
 @Named

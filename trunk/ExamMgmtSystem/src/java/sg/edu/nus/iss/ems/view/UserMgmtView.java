@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.ems.controller;
+package sg.edu.nus.iss.ems.view;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,19 +6,18 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import sg.edu.nus.iss.ems.entity.User;
-import sg.edu.nus.iss.ems.service.UserBean;
+import sg.edu.nus.iss.ems.service.UserMgmtService;
 
 @ViewScoped
 @Named
 public class UserMgmtView implements Serializable {
     
     @EJB
-    private UserBean userBean;
-            
+    private UserMgmtService userBean;
+    
     private User user;
     
     public List<User> users() {
-        System.out.println("==>" + userBean.findAll().size());
         return userBean.findAll();
     }
     

@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.ems.controller;
+package sg.edu.nus.iss.ems.view;
 
 import java.io.Serializable;
 import javax.faces.view.ViewScoped;
