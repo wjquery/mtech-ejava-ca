@@ -12,20 +12,20 @@
             <h:form id="menu">
                 <p:growl id="messages"/>
                 <p:menubar>
-                    <p:menuitem value="User Management" icon="ui-icon-person" rendered="#{loginView.menuType eq 1}"
+                    <p:menuitem value="#{msg['title.mgmt.user']}" icon="ui-icon-person" rendered="#{loginView.menuType eq 1}"
                                 url="/faces/admin/user.xhtml"/>
-                    <p:menuitem value="Module Management" icon="ui-icon-note" rendered="#{loginView.menuType eq 1}"
+                    <p:menuitem value="#{msg['title.mgmt.module']}" icon="ui-icon-note" rendered="#{loginView.menuType eq 1}"
                                 url="/faces/admin/module.xhtml"/>
 
-                    <p:menuitem value="Exam Question Management" icon="ui-icon-pencil" rendered="#{loginView.menuType eq 2}"
+                    <p:menuitem value="#{msg['title.mgmt.question']}" icon="ui-icon-pencil" rendered="#{loginView.menuType eq 2}"
                                 url="/faces/lecturer/question.xhtml"/>
-                    <p:menuitem value="Exam Paper Management" icon="ui-icon-document" rendered="#{loginView.menuType eq 2}"
+                    <p:menuitem value="#{msg['title.mgmt.exampaper']}" icon="ui-icon-document" rendered="#{loginView.menuType eq 2}"
                                 url="/faces/lecturer/exam.xhtml"/>
                     
-                    <p:menuitem value="Exam Invigilation" icon="ui-icon-search" rendered="#{loginView.menuType eq 1 or loginView.menuType eq 2}"
+                    <p:menuitem value="#{msg['title.invigilation.exam']}" icon="ui-icon-search" rendered="#{loginView.menuType eq 1 or loginView.menuType eq 2}"
                                 url="/faces/inv_exam.xhtml"/>
                     
-                        <p:menuitem value="My Exams" icon="ui-icon-pencil" rendered="#{loginView.menuType eq 3}"
+                        <p:menuitem value="#{msg['title.stu.exam']}" icon="ui-icon-pencil" rendered="#{loginView.menuType eq 3}"
                                     url="/faces/student/exam.xhtml"/>
                     <p:menuitem value="Help" icon="ui-icon-help"/>
 
