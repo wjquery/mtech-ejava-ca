@@ -7,16 +7,6 @@ import javax.persistence.PersistenceContext;
 import sg.edu.nus.iss.ems.entity.Module;
 
 @Stateless
-public class ModuleBean {
+public class ModuleBean extends GenericDataAccessService<Module>{
     
-    @PersistenceContext
-    private EntityManager em;
-    
-    public Module findModuleByCode(String code) {
-        return em.find(Module.class, code);
-    }
-    
-    public List<Module> findAllModules() {
-        return em.createNamedQuery("Module.findAll", Module.class).getResultList();
-    }
 }

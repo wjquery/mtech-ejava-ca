@@ -15,10 +15,14 @@
                 <ems:menu/>
             </ui:define>
             <ui:define name="content">
-                Modules<br/>
-                <ui:repeat value="#{moduleView.modules()}" var="module">
-                    #{module.code} -- #{module.name}<br/>
-                </ui:repeat>
+                <p:panel style="height: 450px;">
+                    <h:form>
+                        <p:outputLabel for="module" value="Modules" />
+                        <h:selectOneMenu id="module" value="#{moduleView.module}">
+                            <f:selectItems value="#{moduleView.moduleList()}"/>
+                        </h:selectOneMenu>
+                    </h:form>
+                </p:panel>
             </ui:define>
         </ui:composition>
     </h:body>
