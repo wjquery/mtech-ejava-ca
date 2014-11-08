@@ -53,6 +53,7 @@ public class User implements Serializable {
     @Column(name = "Password")
     private String password;
     
+    @Column(name = "Status")
     private Integer status;
     
     @ManyToMany
