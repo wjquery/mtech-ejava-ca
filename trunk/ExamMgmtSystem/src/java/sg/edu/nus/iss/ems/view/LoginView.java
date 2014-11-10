@@ -11,7 +11,7 @@ import sg.edu.nus.iss.ems.entity.Role;
 import sg.edu.nus.iss.ems.entity.User;
 import sg.edu.nus.iss.ems.service.UserAccountService;
 
-@Named(value = "loginView")
+@Named
 @SessionScoped
 public class LoginView implements Serializable {
 
