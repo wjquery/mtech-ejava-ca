@@ -5,20 +5,26 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 import sg.edu.nus.iss.ems.entity.Question;
+import sg.edu.nus.iss.ems.service.QuestionMgtService;
 
 @Stateless
-public class QuestionBean extends GenericDataAccessService<Question> {
+public class QuestionBean extends GenericDataAccessService<Question> implements QuestionMgtService {
     
     private static final String FIND_BY_MODULE = 
-            "select q from Question q where q.moduleCode.code = :moduleCode";
+            "select q from Question q where q.module.code = :moduleCode";
+    private static final String FIND_ACTIVE_BY_MODULE = 
+            "select q from Question q where q.module.code = :moduleCode and q.status = 1";
     private static final String FIND_BY_MODULE_AND_QID = 
-            "select q from Question q where q.moduleCode.code = :moduleCode and q.qid = :qid";
+            "select q from Question q where q.module.code = :moduleCode and q.qid = :qid";
     
     @EJB
     private QuestionSeqGenerator seqGenerator;
     
-    public List<Question> findQuestionsByModule(String moduleCode, int offset, int size) {
-        TypedQuery<Question> q = em.createQuery(FIND_BY_MODULE, Question.class)
+    public List<Question> findQuestionsByModule(String moduleCode, int offset, int size, boolean activeOnly) {
+        String sql;
+        if (activeOnly) sql = FIND_ACTIVE_BY_MODULE;
+        else sql = FIND_BY_MODULE;
+        TypedQuery<Question> q = em.createQuery(sql, Question.class)
                 .setParameter("moduleCode", moduleCode)
                 .setFirstResult(offset)
                 .setMaxResults(offset + size);

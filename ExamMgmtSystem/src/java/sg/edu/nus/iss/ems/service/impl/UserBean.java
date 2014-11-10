@@ -58,4 +58,5 @@ public class UserBean extends GenericDataAccessService<User> implements UserAcco
         }
         return null;
     }
+    
 }

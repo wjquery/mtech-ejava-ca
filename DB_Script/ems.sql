@@ -32,7 +32,7 @@ CREATE TABLE `mcq_choice` (
   PRIMARY KEY (`Id`),
   KEY `mcq_qid_idx` (`Question_Id`),
   CONSTRAINT `mcq_qid` FOREIGN KEY (`Question_Id`) REFERENCES `question` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `mcq_choice` (
 
 LOCK TABLES `mcq_choice` WRITE;
 /*!40000 ALTER TABLE `mcq_choice` DISABLE KEYS */;
-INSERT INTO `mcq_choice` VALUES (1,1,'A','public'),(2,1,'B','protected'),(3,1,'C','private'),(4,1,'D','All of the above');
+INSERT INTO `mcq_choice` VALUES (1,1,'A','public'),(2,1,'B','protected'),(3,1,'C','private'),(4,1,'D','All of the above'),(5,2,'A','upper'),(6,2,'B','super'),(7,2,'C','this'),(8,2,'D','None of the above');
 /*!40000 ALTER TABLE `mcq_choice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +97,7 @@ CREATE TABLE `question` (
   CONSTRAINT `q_mcode` FOREIGN KEY (`Module_Code`) REFERENCES `module` (`Code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `q_type` FOREIGN KEY (`Type`) REFERENCES `question_type` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `q_uid` FOREIGN KEY (`Created_By`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +106,7 @@ CREATE TABLE `question` (
 
 LOCK TABLES `question` WRITE;
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
-INSERT INTO `question` VALUES (1,'CS1101',1,1,1,'2014-11-10 21:53:48',1,1,'Which of these access specifiers can be used for an interface?',NULL);
+INSERT INTO `question` VALUES (1,'CS1101',1,1,1,'2014-11-10 21:53:48',1,1,'Which of these access specifiers can be used for an interface?',1),(2,'CS1101',2,1,1,'2014-11-10 21:53:48',1,1,'Which of these keywords is used to refer to member of base class from a sub class?',1);
 /*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,4 +308,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-11-10 22:20:38
+-- Dump completed on 2014-11-10 23:52:36

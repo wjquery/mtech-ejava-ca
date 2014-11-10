@@ -7,6 +7,7 @@ package sg.edu.nus.iss.ems.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -76,7 +77,7 @@ public class Question implements Serializable {
     private User createdBy;
 
     @OneToMany(mappedBy = "question")
-    private Set<McqChoice> choices;
+    private List<McqChoice> choices;
     
     public Question() {
     }
@@ -155,6 +156,14 @@ public class Question implements Serializable {
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public List<McqChoice> getChoices() {
+        return choices;
+    }
+
+    public void setChoices(List<McqChoice> choices) {
+        this.choices = choices;
     }
 
     @Override
