@@ -7,6 +7,7 @@ package sg.edu.nus.iss.ems.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +17,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,12 +33,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "question")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Question.findAll", query = "SELECT q FROM Question q"),
-    @NamedQuery(name = "Question.findById", query = "SELECT q FROM Question q WHERE q.id = :id"),
-    @NamedQuery(name = "Question.findByQid", query = "SELECT q FROM Question q WHERE q.qid = :qid"),
-    @NamedQuery(name = "Question.findByVersion", query = "SELECT q FROM Question q WHERE q.version = :version"),
-    @NamedQuery(name = "Question.findByCreatedOn", query = "SELECT q FROM Question q WHERE q.createdOn = :createdOn"),
-    @NamedQuery(name = "Question.findByMark", query = "SELECT q FROM Question q WHERE q.mark = :mark")})
+    @NamedQuery(name = "Question.findAll", query = "SELECT q FROM Question q WHERE q.status = 1"),
+    @NamedQuery(name = "Question.findById", query = "SELECT q FROM Question q WHERE q.id = :id AND q.status = 1"),
+    @NamedQuery(name = "Question.findByQid", query = "SELECT q FROM Question q WHERE q.qid = :qid AND q.status = 1"),
+    @NamedQuery(name = "Question.findByVersion", query = "SELECT q FROM Question q WHERE q.version = :version AND q.status = 1"),
+    @NamedQuery(name = "Question.findByCreatedOn", query = "SELECT q FROM Question q WHERE q.createdOn = :createdOn AND q.status = 1"),
+    @NamedQuery(name = "Question.findByMark", query = "SELECT q FROM Question q WHERE q.mark = :mark AND q.status = 1")})
 public class Question implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -62,9 +64,8 @@ public class Question implements Serializable {
     @Column(name = "Question_Text")
     private String questionText;
     
-    @Lob
     @Column(name = "Status")
-    private byte[] status;
+    private Integer status;
     
     @JoinColumn(name = "Module_Code", referencedColumnName = "Code")
     @ManyToOne
@@ -74,6 +75,9 @@ public class Question implements Serializable {
     @ManyToOne
     private User createdBy;
 
+    @OneToMany(mappedBy = "question")
+    private Set<McqChoice> choices;
+    
     public Question() {
     }
 
@@ -129,11 +133,11 @@ public class Question implements Serializable {
         this.questionText = questionText;
     }
 
-    public byte[] getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(byte[] status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
