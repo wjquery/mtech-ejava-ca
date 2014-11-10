@@ -18,6 +18,34 @@ USE `ems`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `mcq_choice`
+--
+
+DROP TABLE IF EXISTS `mcq_choice`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mcq_choice` (
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Question_Id` int(11) DEFAULT NULL,
+  `Choice` varchar(1) DEFAULT NULL COMMENT 'A, B, C, D, E',
+  `Choice_Text` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `mcq_qid_idx` (`Question_Id`),
+  CONSTRAINT `mcq_qid` FOREIGN KEY (`Question_Id`) REFERENCES `question` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mcq_choice`
+--
+
+LOCK TABLES `mcq_choice` WRITE;
+/*!40000 ALTER TABLE `mcq_choice` DISABLE KEYS */;
+INSERT INTO `mcq_choice` VALUES (1,1,'A','public'),(2,1,'B','protected'),(3,1,'C','private'),(4,1,'D','All of the above');
+/*!40000 ALTER TABLE `mcq_choice` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `module`
 --
 
@@ -60,11 +88,12 @@ CREATE TABLE `question` (
   `Created_By` int(11) DEFAULT NULL,
   `Mark` double DEFAULT NULL,
   `Question_Text` text,
-  `Status` binary(1) DEFAULT NULL,
+  `Status` int(11) DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `q_mcode_idx` (`Module_Code`),
   KEY `q_type_idx` (`Type`),
   KEY `q_uid_idx` (`Created_By`),
+  KEY `q_qid_idx` (`QID`),
   CONSTRAINT `q_mcode` FOREIGN KEY (`Module_Code`) REFERENCES `module` (`Code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `q_type` FOREIGN KEY (`Type`) REFERENCES `question_type` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `q_uid` FOREIGN KEY (`Created_By`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -77,7 +106,7 @@ CREATE TABLE `question` (
 
 LOCK TABLES `question` WRITE;
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
-INSERT INTO `question` VALUES (1,'CS1101',1,1,1,NULL,NULL,1,NULL,NULL);
+INSERT INTO `question` VALUES (1,'CS1101',1,1,1,'2014-11-10 21:53:48',1,1,'Which of these access specifiers can be used for an interface?',NULL);
 /*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -199,7 +228,7 @@ CREATE TABLE `user` (
   `Name` varchar(255) DEFAULT NULL,
   `Status` int(11) DEFAULT '1',
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -208,7 +237,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','password','Tan Ah Kow',1),(2,'lecturer','password','Lim Ah Thet',1),(3,'student','password','Chau Ah Kua',1);
+INSERT INTO `user` VALUES (1,'admin','efacc4001e857f7eba4ae781c2932dedf843865e','Tan Ah Kow',1),(2,'lecturer','6a82d9d36486c4ec35be47fa46ccf033f6b207be','Lim Ah Thet',1),(3,'student','7acb896e2328413de34c2eff02398f02eae3c441','Chau Ah Kua',1),(4,'test',NULL,'Allen Wake',1),(5,'tester',NULL,'Shirley Ong',1),(6,'beng',NULL,'Ah Beng',1),(7,'lian',NULL,'Ah Lian',1),(8,'boy',NULL,'Ah Boy',1),(9,'girl',NULL,'Ah Gal',1),(10,'chua',NULL,'Chua Chu Kang',1),(11,'yeo',NULL,'Yeo Chu Kang',1),(12,'ang',NULL,'Ang Ah Moh',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -279,4 +308,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-11-07  0:12:28
+-- Dump completed on 2014-11-10 22:20:38
