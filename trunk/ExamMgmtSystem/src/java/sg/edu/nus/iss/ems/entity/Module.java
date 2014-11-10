@@ -51,7 +51,7 @@ public class Module implements Serializable {
     @Column(name = "Question_Count")
     private Integer questionCount;
     
-    @OneToMany(mappedBy = "moduleCode")
+    @OneToMany(mappedBy = "module")
     private List<Question> questionList;
     
     @ManyToMany(mappedBy = "modules")

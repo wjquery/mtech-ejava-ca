@@ -68,7 +68,7 @@ public class Question implements Serializable {
     
     @JoinColumn(name = "Module_Code", referencedColumnName = "Code")
     @ManyToOne
-    private Module moduleCode;
+    private Module module;
     
     @JoinColumn(name = "Created_By", referencedColumnName = "Id")
     @ManyToOne
@@ -137,12 +137,12 @@ public class Question implements Serializable {
         this.status = status;
     }
 
-    public Module getModuleCode() {
-        return moduleCode;
+    public Module getModule() {
+        return module;
     }
 
-    public void setModuleCode(Module moduleCode) {
-        this.moduleCode = moduleCode;
+    public void setModule(Module module) {
+        this.module = module;
     }
 
     public User getCreatedBy() {
