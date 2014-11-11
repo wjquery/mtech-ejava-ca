@@ -3,9 +3,10 @@ package sg.edu.nus.iss.ems.service.impl;
 import java.util.List;
 import javax.ejb.Stateless;
 import sg.edu.nus.iss.ems.entity.Module;
+import sg.edu.nus.iss.ems.service.ModuleMgmtService;
 
 @Stateless
-public class ModuleBean extends GenericDataAccessService<Module>{
+public class ModuleBean extends GenericDataAccessService<Module> implements ModuleMgmtService {
     
     private static final String FIND_ALL = "Module.findAll";
     
@@ -19,6 +20,5 @@ public class ModuleBean extends GenericDataAccessService<Module>{
         module.setStatus(0);
         super.update(module);
     }
-    
     
 }
