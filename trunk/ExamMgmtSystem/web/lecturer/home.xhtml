@@ -15,18 +15,10 @@
                 <ems:menu/>
             </ui:define>
             <ui:define name="content">
-                <p:panel style="height: 450px;">
+                <p:panel style="min-height: 450px;">
                     <h:form>
-                        <p:outputLabel for="module" value="#{moduleView.module}" />
-                        
                         <p:messages/>
-                        <p:selectOneMenu id="module" value="#{moduleView.module}">
-                            <f:selectItems value="#{moduleView.modules()}" 
-                                           var="m"
-                                           itemLabel="#{m.name}"
-                                           itemValue="#{m.code}"/>
-                            <f:ajax execute="@form" render="@form" />
-                        </p:selectOneMenu>
+                        
                     </h:form>
                 </p:panel>
             </ui:define>

@@ -12,4 +12,6 @@ public interface UserMgmtService {
     public void delete(User user);
     public User load(Serializable primaryKey);
     public List<User> findAll();
+    
+    
 }
