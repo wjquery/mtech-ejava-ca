@@ -40,7 +40,6 @@ public class User implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "Id")
     private Integer id;
     @Size(max = 255)
