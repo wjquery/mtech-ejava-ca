@@ -49,4 +49,5 @@ public class UserMgmtView implements Serializable {
         }
     }
     
+    
 }

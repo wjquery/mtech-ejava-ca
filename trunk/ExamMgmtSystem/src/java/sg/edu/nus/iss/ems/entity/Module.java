@@ -39,10 +39,10 @@ public class Module implements Serializable {
     @Id
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 255)
     @Column(name = "Code")
     private String code;
-    @Size(max = 100)
+    @Size(max = 255)
     @Column(name = "Name")
     private String name;
     

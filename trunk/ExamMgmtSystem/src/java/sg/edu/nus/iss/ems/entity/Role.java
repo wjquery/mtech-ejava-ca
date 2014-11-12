@@ -38,13 +38,14 @@ public class Role implements Serializable {
     @NotNull
     @Column(name = "Id")
     private Integer id;
-    @Size(max = 100)
+    @Size(max = 255)
     @Column(name = "Name")
     private String name;
     @Size(max = 255)
     @Column(name = "Description")
     private String description;
     
+    @Column(name = "Status")
     private Integer status;
     
     @ManyToMany(mappedBy = "roles")
