@@ -32,13 +32,18 @@
                         <p:commandButton id="createButton" 
                                                  icon="ui-icon-plus"
                                                  value="#{msg['btn.create']}" 
-                                                 actionListener="#{moduleMgmtView.prepareCreate}"
+                                                 actionListener="#{questionMgmtView.prepareCreate}"
                                                  update="createForm"
                                                  oncomplete="PF('createDialog').show()"/>
                         
-                        <p:dataTable id="qnList" var="qn" value="#{questionMgmtView.findQuestionsByModules()}" 
-                                     sortMode="multiple" 
-                                     style="width: 80%; margin: 10px 0px;">
+                        <p:dataTable id="qnList" var="qn" value="#{questionMgmtView.questions}"
+                                     style="width: 80%; margin: auto;"
+                                     selectionMode="single" 
+                                     selection="#{questionMgmtView.selectedQn}"
+                                     paginator="true"
+                                     rowKey="#{qn.id}"
+                                     rows="10"
+                                     rowsPerPageTemplate="10,20,30,40,50">
                             <f:facet name="header">
                                 Question Management
                             </f:facet>
@@ -56,11 +61,9 @@
                             
                             <p:column headerText="Action" sortBy="#{qn.questionText}" style="width: 10%;">
                                 <p:commandButton value="#{msg['btn.view']}" 
-                                                 actionListener="#{questionMgmtView.findQuestion(qn.id)}" 
                                                  process="@form" update=":questions:qnChoices"/>
                                 <p:commandButton value="#{msg['btn.edit']}" 
-                                                 onclick="PF('editDlg').show()"
-                                                 actionListener="#{questionMgmtView.findQuestion(id)}"/>
+                                                 onclick="PF('editDlg').show()"/>
                                 
                             </p:column>
                             

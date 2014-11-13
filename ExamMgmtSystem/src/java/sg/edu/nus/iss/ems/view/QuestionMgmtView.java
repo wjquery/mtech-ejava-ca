@@ -8,6 +8,7 @@ import javax.inject.Named;
 import sg.edu.nus.iss.ems.entity.Question;
 import sg.edu.nus.iss.ems.entity.QuestionType;
 import sg.edu.nus.iss.ems.service.QuestionMgtService;
+import sg.edu.nus.iss.ems.util.JsfUtil;
 
 @ViewScoped
 @Named
@@ -23,40 +24,11 @@ public class QuestionMgmtView implements Serializable {
     private int offset = 0;
     private int size = 15;
 
-    public String getModule() {
-        return module;
-    }
-
-    public void setModule(String module) {
-        this.module = module;
-    }
-    
-    public List<Question> findQuestionsByModules() {
-        return questionBean.findQuestionsByModule(module, offset, size, true);
-    }
-    
-    public void findQuestion(int id) {
-        selectedQn = questionBean.load(id);
-    }
-    
-    public List<QuestionType> findAllQuestionTypes() {
-        return questionBean.findAllQuestionTypes();
-    }
-    
-    public Question prepareCreate() {
-        selectedQn = new Question();
-        
-        return selectedQn;
-    }
-    
-
-    // getter & setters
+    // setters & getters
     public List<Question> getQuestions() {
+        if (questions == null)
+            questions = questionBean.findQuestionsByModule(module, offset, size, true);
         return questions;
-    }
-
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
     }
 
     public Question getSelectedQn() {
@@ -65,6 +37,33 @@ public class QuestionMgmtView implements Serializable {
 
     public void setSelectedQn(Question selectedQn) {
         this.selectedQn = selectedQn;
+    }
+    
+    public String getModule() {
+        return module;
+    }
+
+    public void setModule(String module) {
+        this.module = module;
+    }
+    
+    // CRUD methods
+    public Question prepareCreate() {
+        selectedQn = new Question();
+        
+        return selectedQn;
+    }
+    
+    public void create() {
+        questionBean.create(selectedQn);
+        if (!JsfUtil.isValidationFailed()) {
+            questions = null;    // Invalidate list of questions to trigger re-query.
+        }
+    }
+    
+    // helper methods
+    public List<QuestionType> findAllQuestionTypes() {
+        return questionBean.findAllQuestionTypes();
     }
     
 }

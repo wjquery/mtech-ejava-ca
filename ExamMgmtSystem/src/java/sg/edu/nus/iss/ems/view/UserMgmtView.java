@@ -19,6 +19,7 @@ public class UserMgmtView implements Serializable {
     private List<User> users = null;
     private User selectedUser;
     
+    // setters & getters
     public List<User> getUsers() {
         if (users == null) {
             users = userBean.findAll();
@@ -32,6 +33,12 @@ public class UserMgmtView implements Serializable {
 
     public void setSelectedUser(User selectedUser) {
         this.selectedUser = selectedUser;
+    }
+    
+    // CRUD methods
+    public User prepareCreate() {
+        selectedUser = new User();
+        return selectedUser;
     }
     
     public void create() {
@@ -48,6 +55,5 @@ public class UserMgmtView implements Serializable {
             users = null;    // Invalidate list of users to trigger re-query.
         }
     }
-    
     
 }
