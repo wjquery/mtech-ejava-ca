@@ -1,0 +1,2 @@
+sort table
+sel qn type -> show choice input

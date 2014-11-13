@@ -16,7 +16,6 @@
                 <ems:menu/>
             </ui:define>
             <ui:define name="content">
-                <script type="text/javascript" src="#{facesContext.externalContext.applicationContextPath}/resources/scripts/jsfcrud.js"/>
                 <h:form id="questions">
                     <p:panel style="min-height: 450px;">
                         <p:messages/>
@@ -39,8 +38,8 @@
                                      rows="10"
                                      rowsPerPageTemplate="10,20,30,40,50">
                             
-                            <p:ajax event="rowSelect"   update="createButton"/>
-                            <p:ajax event="rowUnselect" update="createButton"/>
+                            <p:ajax event="rowSelect"   update="createButton editButton"/>
+                            <p:ajax event="rowUnselect" update="createButton editButton"/>
 
                             <f:facet name="header">
                                 Question Management
@@ -61,14 +60,6 @@
                                 <h:outputText value="#{qn.questionText}" />
                             </p:column>
                             
-                            <p:column headerText="Action" style="width: 10%;">
-                                <p:commandButton value="#{msg['btn.view']}" 
-                                                 process="@form" update=":questions:qnChoices"/>
-                                <!--p:commandButton value="#{msg['btn.edit']}" 
-                                                 onclick="PF('editDlg').show()"/-->
-                                
-                            </p:column>
-                            
                             <f:facet name="footer">
                                 <p:commandButton id="createButton" 
                                                  icon="ui-icon-plus"
@@ -76,6 +67,12 @@
                                                  actionListener="#{questionMgmtView.prepareCreate}"
                                                  update=":createForm"
                                                  oncomplete="PF('createDialog').show()"/>
+                                <p:commandButton id="editButton" 
+                                             icon="ui-icon-pencil" 
+                                             value="#{msg['btn.edit']}" 
+                                             update=":editForm" 
+                                             oncomplete="PF('editDialog').show()" 
+                                             disabled="#{empty questionMgmtView.selectedQn}"/>
                             </f:facet>
                         </p:dataTable>
                         
@@ -90,9 +87,42 @@
                     </p:panel>
                 </h:form>
                 
-                <p:dialog id="createDlg" widgetVar="createDialog" modal="true" resizable="false" appendTo="@(body)" header="#{msg['title.mgmt.question']}">
+                <p:dialog id="createDlg" widgetVar="createDialog" modal="true" resizable="false" appendTo="@(body)" header="#{msg['title.mgmt.question.create']}">
                     <h:form id="createForm">
-                        <h:panelGroup id="display">
+                        <h:panelGroup id="createDisplay">
+                            <p:panelGrid columns="2" rendered="#{questionMgmtView.selectedQn != null}">
+                                <p:outputLabel value="Module" for="module" />
+                                <p:selectOneMenu id="module" value="#{questionMgmtView.selectedQn.module}"  
+                                                 converter="moduleConverter">
+                                    <f:selectItem itemLabel="#{questionMgmtView.module.code}" itemValue="#{questionMgmtView.module}"/>
+                                </p:selectOneMenu>
+                                
+                                <p:outputLabel value="Question Type" for="type" />
+                                <p:selectOneMenu id="type" value="#{questionMgmtView.selectedQn.questionType}" 
+                                                 converter="questionTypeConverter">
+                                    <f:selectItems value="#{questionMgmtView.findAllQuestionTypes()}" var="type"
+                                                   itemLabel="#{type.type}"
+                                                   itemValue="#{type}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Mark" for="mark" />
+                                <p:inputText id="mark" value="#{questionMgmtView.selectedQn.mark}" title="Mark" />
+
+                                <p:outputLabel value="Question Text" for="qnText" />
+                                <p:inputTextarea id="qnText" value="#{questionMgmtView.selectedQn.questionText}" title="Question Text" 
+                                                 rows="3" cols="80"
+                                             required="true" requiredMessage="Question Text is required!"/>
+
+                            </p:panelGrid>
+                            <p:commandButton actionListener="#{questionMgmtView.create}" value="#{msg['btn.save']}" update="createDisplay,:questions:qnList,:growl" oncomplete="handleSubmit(args,'createDialog');"/>
+                            <p:commandButton value="Cancel" onclick="PF('createDialog').hide()"/>
+                        </h:panelGroup>
+                    </h:form>
+                </p:dialog>
+                
+                <p:dialog id="editDlg" widgetVar="editDialog" modal="true" resizable="false" appendTo="@(body)" header="#{msg['title.mgmt.question.edit']}">
+                    <h:form id="editForm">
+                        <h:panelGroup id="editDisplay">
                             <p:panelGrid columns="2" rendered="#{questionMgmtView.selectedQn != null}">
                                 <p:outputLabel value="Module" for="module" />
                                 <p:selectOneMenu id="module" value="#{questionMgmtView.selectedQn.module}" 
@@ -117,11 +147,12 @@
                                              required="true" requiredMessage="Question Text is required!"/>
 
                             </p:panelGrid>
-                            <p:commandButton actionListener="#{questionMgmtView.create}" value="#{msg['btn.save']}" update="display,:questions:qnList,:growl"/>
-                            <p:commandButton value="Cancel" onclick="createDialog.hide()"/>
+                            <p:commandButton actionListener="#{questionMgmtView.update}" value="#{msg['btn.save']}" update="editDisplay,:questions:qnList,:growl" oncomplete="handleSubmit(args,'createDialog');"/>
+                            <p:commandButton value="Cancel" onclick="PF('editDialog').hide()"/>
                         </h:panelGroup>
                     </h:form>
                 </p:dialog>
+                
             </ui:define>
         </ui:composition>
     </h:body>
