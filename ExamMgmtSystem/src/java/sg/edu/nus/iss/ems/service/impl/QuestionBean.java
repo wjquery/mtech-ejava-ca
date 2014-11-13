@@ -5,6 +5,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 import sg.edu.nus.iss.ems.entity.Question;
+import sg.edu.nus.iss.ems.entity.QuestionType;
 import sg.edu.nus.iss.ems.service.QuestionMgtService;
 
 @Stateless
@@ -16,10 +17,13 @@ public class QuestionBean extends GenericDataAccessService<Question> implements 
             "select q from Question q where q.module.code = :moduleCode and q.status = 1";
     private static final String FIND_BY_MODULE_AND_QID = 
             "select q from Question q where q.module.code = :moduleCode and q.qid = :qid";
+    private static final String FIND_ALL_QUESTION_TYPES =
+            "QuestionType.findAll";
     
     @EJB
     private QuestionSeqGenerator seqGenerator;
     
+    @Override
     public List<Question> findQuestionsByModule(String moduleCode, int offset, int size, boolean activeOnly) {
         String sql;
         if (activeOnly) sql = FIND_ACTIVE_BY_MODULE;
@@ -53,4 +57,8 @@ public class QuestionBean extends GenericDataAccessService<Question> implements 
         return question;
     }
     
+    @Override
+    public List<QuestionType> findAllQuestionTypes() {
+        return em.createNamedQuery(FIND_ALL_QUESTION_TYPES, QuestionType.class).getResultList();
+    }
 }

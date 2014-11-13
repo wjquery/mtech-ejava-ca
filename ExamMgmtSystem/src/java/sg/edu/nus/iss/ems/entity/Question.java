@@ -78,6 +78,10 @@ public class Question implements Serializable {
     @OneToMany(mappedBy = "question")
     private List<McqChoice> choices;
     
+    @JoinColumn(name = "Type", referencedColumnName = "Id")
+    @ManyToOne
+    private QuestionType questionType;
+    
     public Question() {
     }
 
@@ -165,6 +169,14 @@ public class Question implements Serializable {
         this.choices = choices;
     }
 
+    public QuestionType getQuestionType() {
+        return questionType;
+    }
+    
+    public void setQuestionType(QuestionType questionType) {
+        this.questionType = questionType;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

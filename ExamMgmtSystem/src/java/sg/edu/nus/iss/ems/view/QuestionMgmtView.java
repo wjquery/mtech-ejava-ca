@@ -6,6 +6,7 @@ import javax.ejb.EJB;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import sg.edu.nus.iss.ems.entity.Question;
+import sg.edu.nus.iss.ems.entity.QuestionType;
 import sg.edu.nus.iss.ems.service.QuestionMgtService;
 
 @ViewScoped
@@ -37,7 +38,19 @@ public class QuestionMgmtView implements Serializable {
     public void findQuestion(int id) {
         selectedQn = questionBean.load(id);
     }
+    
+    public List<QuestionType> findAllQuestionTypes() {
+        return questionBean.findAllQuestionTypes();
+    }
+    
+    public Question prepareCreate() {
+        selectedQn = new Question();
+        
+        return selectedQn;
+    }
+    
 
+    // getter & setters
     public List<Question> getQuestions() {
         return questions;
     }
