@@ -18,7 +18,7 @@ public class QuestionBean extends GenericDataAccessService<Question> implements 
     private static final String FIND_ACTIVE_BY_MODULE = 
             "select q from Question q where q.module.code = :moduleCode and q.status = 1";
     private static final String FIND_BY_MODULE_AND_QID = 
-            "select q from Question q where q.module.code = :moduleCode and q.qid = :qid";
+            "select q from Question q where q.module.code = :moduleCode and q.qid = :qid and q.status = 1";
     private static final String FIND_ALL_QUESTION_TYPES =
             "QuestionType.findAll";
     
@@ -41,10 +41,10 @@ public class QuestionBean extends GenericDataAccessService<Question> implements 
     public void create(Question question) {
         int qid = seqGenerator.next(question.getModule().getCode());
         question.setQid(qid);
-        question.setStatus(1);
-        question.setCreatedOn(new Date());
         question.getModule().setQuestionCount(question.getModule().getQuestionCount() + 1);
+        question.setStatus(1);
         question.setVersion(1);
+        question.setCreatedOn(new Date());
         super.create(question);
     }
     
@@ -55,9 +55,11 @@ public class QuestionBean extends GenericDataAccessService<Question> implements 
                 .setParameter("qid", question.getQid())
                 .getSingleResult();
         prevQn.setStatus(0);
-        super.update(question);
+        super.update(prevQn);
         
+        question.setVersion(question.getVersion() + 1);
         question.setStatus(1);
+        question.setCreatedOn(new Date());
         super.create(question);
         return question;
     }

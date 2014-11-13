@@ -67,6 +67,10 @@ public class QuestionMgmtView implements Serializable {
         }
     }
     
+    public void update() {
+        questionBean.update(selectedQn);
+    }
+    
     // helper methods
     public List<QuestionType> findAllQuestionTypes() {
         return questionBean.findAllQuestionTypes();
