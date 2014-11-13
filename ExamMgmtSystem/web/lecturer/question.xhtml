@@ -16,25 +16,19 @@
                 <ems:menu/>
             </ui:define>
             <ui:define name="content">
+                <script type="text/javascript" src="#{facesContext.externalContext.applicationContextPath}/resources/scripts/jsfcrud.js"/>
                 <h:form id="questions">
                     <p:panel style="min-height: 450px;">
                         <p:messages/>
                         
                         <p:outputLabel for="module" value="Modules" />
-                        <p:selectOneMenu id="module" value="#{questionMgmtView.module}">
+                        <p:selectOneMenu id="module" value="#{questionMgmtView.module}" converter="moduleConverter">
                             <f:selectItems value="#{loginView.loginUser.modules}" 
                                            var="m"
-                                           itemLabel="#{m.name}"
-                                           itemValue="#{m.code}"/>
+                                           itemLabel="#{m.code} - #{m.name}"
+                                           itemValue="#{m}"/>
                             <f:ajax render=":questions:qnList" />
                         </p:selectOneMenu>
-                        
-                        <p:commandButton id="createButton" 
-                                                 icon="ui-icon-plus"
-                                                 value="#{msg['btn.create']}" 
-                                                 actionListener="#{questionMgmtView.prepareCreate}"
-                                                 update="createForm"
-                                                 oncomplete="PF('createDialog').show()"/>
                         
                         <p:dataTable id="qnList" var="qn" value="#{questionMgmtView.questions}"
                                      style="width: 80%; margin: auto;"
@@ -44,6 +38,10 @@
                                      rowKey="#{qn.id}"
                                      rows="10"
                                      rowsPerPageTemplate="10,20,30,40,50">
+                            
+                            <p:ajax event="rowSelect"   update="createButton"/>
+                            <p:ajax event="rowUnselect" update="createButton"/>
+
                             <f:facet name="header">
                                 Question Management
                             </f:facet>
@@ -51,7 +49,11 @@
                                 <h:outputText value="#{qn.qid}" />
                             </p:column>
 
-                            <p:column headerText="Mark" sortBy="#{qn.mark}" style="width: 5%;">
+                            <p:column headerText="Mark" sortBy="#{qn.questionType.type}" style="width: 5%;">
+                                <h:outputText value="#{qn.questionType.type}" />
+                            </p:column>
+                            
+                            <p:column headerText="Type" sortBy="#{qn.mark}" style="width: 5%;">
                                 <h:outputText value="#{qn.mark}" />
                             </p:column>
 
@@ -59,62 +61,67 @@
                                 <h:outputText value="#{qn.questionText}" />
                             </p:column>
                             
-                            <p:column headerText="Action" sortBy="#{qn.questionText}" style="width: 10%;">
+                            <p:column headerText="Action" style="width: 10%;">
                                 <p:commandButton value="#{msg['btn.view']}" 
                                                  process="@form" update=":questions:qnChoices"/>
-                                <p:commandButton value="#{msg['btn.edit']}" 
-                                                 onclick="PF('editDlg').show()"/>
+                                <!--p:commandButton value="#{msg['btn.edit']}" 
+                                                 onclick="PF('editDlg').show()"/-->
                                 
                             </p:column>
                             
                             <f:facet name="footer">
-                                
+                                <p:commandButton id="createButton" 
+                                                 icon="ui-icon-plus"
+                                                 value="#{msg['btn.create']}" 
+                                                 actionListener="#{questionMgmtView.prepareCreate}"
+                                                 update=":createForm"
+                                                 oncomplete="PF('createDialog').show()"/>
                             </f:facet>
                         </p:dataTable>
                         
                         <ui:repeat id="qnChoices" value="#{questionMgmtView.selectedQn.choices}" var="choice">
                             #{choice.choice} - #{choice.choiceText} <br/>
                         </ui:repeat>
-               
                         
-                        <p:dialog id="createDlg" widgetVar="createDialog" modal="true" resizable="false" appendTo="@(body)" header="#{msg['title.mgmt.question']}">
-                            <h:form id="createForm">
-                                <h:panelGroup id="display">
-                                    <p:panelGrid columns="2" rendered="#{questionMgmtView.selectedQn != null}">
-                                        <p:outputLabel value="Module" for="module" />
-                                        <p:inputText id="module" value="#{questionMgmtView.selectedQn.module.code}" title="Module" disabled="true"/>
-                                        
-                                        <p:outputLabel value="Question Type" for="type" />
-                                        <p:selectOneMenu id="type" value="#{questionMgmtView.selectedQn.questionType}">
-                                            <f:selectItems value="#{questionMgmtView.findAllQuestionTypes()}"/>
-                                        </p:selectOneMenu>
-                                        
-                                        <p:outputLabel value="#{questionMgmtView.selectedQn.mark}" for="mark" />
-                                        <p:inputText id="mark" value="#{userController.selected.username}" title="Mark" />
-                                        
-                                        <p:outputLabel value="Question Text" for="qnText" />
-                                        <p:inputText id="qnText" value="#{questionMgmtView.selectedQn.questionText}" title="Question Text" 
-                                                     required="true" requiredMessage="Question Text is required!"/>
-                                        
-                                        
-                                    </p:panelGrid>
-                                    <p:commandButton actionListener="#{userMgmtView.create}" value="#{msg['btn.save']}" update="display,:questions:qnList,:growl" oncomplete="handleSubmit(args,'createDialog');"/>
-                                    <p:commandButton value="Cancel" onclick="createDialog.hide()"/>
-                                </h:panelGroup>
-                            </h:form>
-                        </p:dialog>
                         
-                        <p:dialog widgetVar="editDlg" header="Edit Question">
-                            <p:panelGrid columns="2" style="border: 0px;">
-                                Module Code: <p:inputText value="#{questionMgmtView.module}"/>
-                                Marks: <p:inputText value="mark"  />
-                                Question Text: <p:inputText value="text"/>
-                                <h:panelGroup/><p:button value="Save"/>
-                            </p:panelGrid>
-                        </p:dialog>
+                        
+                        
                         
                     </p:panel>
                 </h:form>
+                
+                <p:dialog id="createDlg" widgetVar="createDialog" modal="true" resizable="false" appendTo="@(body)" header="#{msg['title.mgmt.question']}">
+                    <h:form id="createForm">
+                        <h:panelGroup id="display">
+                            <p:panelGrid columns="2" rendered="#{questionMgmtView.selectedQn != null}">
+                                <p:outputLabel value="Module" for="module" />
+                                <p:selectOneMenu id="module" value="#{questionMgmtView.selectedQn.module}" 
+                                                 converter="moduleConverter">
+                                    <f:selectItem itemLabel="#{questionMgmtView.module.code}" itemValue="#{questionMgmtView.module}"/>
+                                </p:selectOneMenu>
+                                
+                                <p:outputLabel value="Question Type" for="type" />
+                                <p:selectOneMenu id="type" value="#{questionMgmtView.selectedQn.questionType}" 
+                                                 converter="questionTypeConverter">
+                                    <f:selectItems value="#{questionMgmtView.findAllQuestionTypes()}" var="type"
+                                                   itemLabel="#{type.type}"
+                                                   itemValue="#{type}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="Mark" for="mark" />
+                                <p:inputText id="mark" value="#{questionMgmtView.selectedQn.mark}" title="Mark" />
+
+                                <p:outputLabel value="Question Text" for="qnText" />
+                                <p:inputTextarea id="qnText" value="#{questionMgmtView.selectedQn.questionText}" title="Question Text" 
+                                                 rows="3" cols="80"
+                                             required="true" requiredMessage="Question Text is required!"/>
+
+                            </p:panelGrid>
+                            <p:commandButton actionListener="#{questionMgmtView.create}" value="#{msg['btn.save']}" update="display,:questions:qnList,:growl"/>
+                            <p:commandButton value="Cancel" onclick="createDialog.hide()"/>
+                        </h:panelGroup>
+                    </h:form>
+                </p:dialog>
             </ui:define>
         </ui:composition>
     </h:body>
