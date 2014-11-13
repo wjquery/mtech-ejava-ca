@@ -32,7 +32,7 @@ CREATE TABLE `mcq_choice` (
   PRIMARY KEY (`Id`),
   KEY `mcq_qid_idx` (`Question_Id`),
   CONSTRAINT `mcq_qid` FOREIGN KEY (`Question_Id`) REFERENCES `question` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `mcq_choice` (
 
 LOCK TABLES `mcq_choice` WRITE;
 /*!40000 ALTER TABLE `mcq_choice` DISABLE KEYS */;
-INSERT INTO `mcq_choice` VALUES (1,1,'A','public'),(2,1,'B','protected'),(3,1,'C','private'),(4,1,'D','All of the above'),(5,2,'A','upper'),(6,2,'B','super'),(7,2,'C','this'),(8,2,'D','None of the above');
+INSERT INTO `mcq_choice` VALUES (1,1,'A','public'),(2,1,'B','protected'),(3,1,'C','private'),(4,1,'D','All of the above'),(5,2,'A','upper'),(6,2,'B','super'),(7,2,'C','this'),(8,2,'D','None of the above'),(9,5,'A','Straight merging'),(10,5,'B','Natural merging'),(11,5,'C','Polyphase sort'),(12,5,'D','Distribution of Initial runs'),(13,11,'A','1'),(14,11,'B','n - 1'),(15,11,'C','n log n'),(16,11,'D','n^2'),(17,12,'A','O(n log n) sorts '),(18,12,'B','Divide-and-conquer sorts '),(19,12,'C','Interchange sorts'),(20,12,'D','Average time is quadratic. '),(21,13,'A','21'),(22,13,'B','41'),(23,13,'C','42'),(24,13,'D','43'),(25,14,'A','Each component of the array requires a large amount of memory. '),(26,14,'B','Each component of the array requires a small amount of memory. '),(27,14,'C','The array has only a few items out of place. '),(28,14,'D','The processor speed is fast. '),(29,15,'A','O(log n) '),(30,15,'B','O(n) '),(31,15,'C',' O(n log n) '),(32,15,'D','O(n²) '),(33,16,'A','O(log n) '),(34,16,'B','O(n) '),(35,16,'C',' O(n log n) '),(36,16,'D','O(n²) ');
 /*!40000 ALTER TABLE `mcq_choice` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -67,7 +67,7 @@ CREATE TABLE `module` (
 
 LOCK TABLES `module` WRITE;
 /*!40000 ALTER TABLE `module` DISABLE KEYS */;
-INSERT INTO `module` VALUES ('CS1101','Introduction to Programming',0,1),('CS1102','Data Structure and Algorithm',0,1),('CS2101','Computer Organization',0,1),('CS2102','Software Engineering',0,1),('MA1105','Discrete Mathematics',0,1);
+INSERT INTO `module` VALUES ('CS1101','Introduction to Programming',3,1),('CS1102','Data Structure and Algorithm',12,1),('CS2101','Computer Organization',0,1),('CS2102','Software Engineering',0,1),('MA1105','Discrete Mathematics',0,1);
 /*!40000 ALTER TABLE `module` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,7 +88,7 @@ CREATE TABLE `question` (
   `Created_By` int(11) DEFAULT NULL,
   `Mark` double DEFAULT NULL,
   `Question_Text` text,
-  `Status` int(11) DEFAULT NULL,
+  `Status` int(11) DEFAULT '1',
   PRIMARY KEY (`Id`),
   KEY `q_mcode_idx` (`Module_Code`),
   KEY `q_type_idx` (`Type`),
@@ -97,7 +97,7 @@ CREATE TABLE `question` (
   CONSTRAINT `q_mcode` FOREIGN KEY (`Module_Code`) REFERENCES `module` (`Code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `q_type` FOREIGN KEY (`Type`) REFERENCES `question_type` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `q_uid` FOREIGN KEY (`Created_By`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +106,7 @@ CREATE TABLE `question` (
 
 LOCK TABLES `question` WRITE;
 /*!40000 ALTER TABLE `question` DISABLE KEYS */;
-INSERT INTO `question` VALUES (1,'CS1101',1,1,1,'2014-11-10 21:53:48',1,1,'Which of these access specifiers can be used for an interface?',1),(2,'CS1101',2,1,1,'2014-11-10 21:53:48',1,1,'Which of these keywords is used to refer to member of base class from a sub class?',1);
+INSERT INTO `question` VALUES (1,'CS1101',1,1,1,'2014-11-10 21:53:48',1,1,'Which of these access specifiers can be used for an interface?',1),(2,'CS1101',2,1,1,'2014-11-10 21:53:48',1,1,'Which of these keywords is used to refer to member of base class from a sub class?',1),(3,'CS1101',3,1,3,'2014-11-10 22:53:48',1,2,'What is the difference between StringBuffer and StringBuilder class?',1),(4,'CS1102',1,1,1,'2014-11-10 22:53:48',1,1,'This is a deprecated question',0),(5,'CS1102',1,2,1,'2014-11-10 22:53:48',1,1,'What are the methods available in storing sequential files?',1),(6,'CS1102',2,1,3,'2014-11-10 22:53:48',1,5,'Write two or three clear sentences to describe how a heapsort works. ',1),(7,'CS1102',3,1,3,'2014-11-14 00:57:41',2,5,'Give a concise accurate description of a good way for quicksort to improve its performance by using insertionsort. ',1),(8,'CS1102',4,1,3,'2014-11-14 01:00:48',2,5,'Give a concise accurate description of a good way for quicksort to choose a pivot element. Your approach should be better than \"use the entry at location [0]\". ',1),(9,'CS1102',5,1,3,'2014-11-14 01:02:04',2,5,'Describe a case where quicksort will result in quadratic behavior. ',1),(10,'CS1102',6,1,3,'2014-11-14 01:03:03',2,8,'Suppose that you implement quicksort nonrecursively using a stack, as in your last programming assignment. You use your algorithm to sort an array of 100 items, and at the start of the final iteration of the while loop, the stack contains just two numbers: 10 (on top) and 90 (on bottom). Write one or two clear sentences to describe which parts of the array are sorted at this point, and which parts of the array remain to be sorted. ',1),(11,'CS1102',7,1,1,'2014-11-14 01:05:31',2,2,'In a selectionsort of n elements, how many times is the swap function called in the complete execution of the algorithm? ',1),(12,'CS1102',8,1,1,'2014-11-14 01:06:12',2,2,'Selectionsort and quicksort both fall into the same category of sorting algorithms. What is this category? ',1),(13,'CS1102',9,1,1,'2014-11-14 01:06:42',2,2,'Suppose that a selectionsort of 100 items has completed 42 iterations of the main loop. How many items are now guaranteed to be in their final spot (never to be moved again)?',1),(14,'CS1102',10,1,1,'2014-11-14 01:07:10',2,2,'When is insertionsort a good choice for sorting an array? ',1),(15,'CS1102',11,1,1,'2014-11-14 01:11:35',2,2,'What is the worst-case time for mergesort to sort an array of n elements? ',1),(16,'CS1102',12,1,1,'2014-11-14 01:12:25',2,2,'What is the worst-case time for quicksort to sort an array of n elements? ',1);
 /*!40000 ALTER TABLE `question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +237,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','efacc4001e857f7eba4ae781c2932dedf843865e','Tan Ah Kow',1),(2,'lecturer','6a82d9d36486c4ec35be47fa46ccf033f6b207be','Lim Ah Thet',1),(3,'student','7acb896e2328413de34c2eff02398f02eae3c441','Chau Ah Kua',1),(4,'test',NULL,'Allen Wake',1),(5,'tester',NULL,'Shirley Ong',1),(6,'beng',NULL,'Ah Beng',1),(7,'lian',NULL,'Ah Lian',1),(8,'boy',NULL,'Ah Boy',1),(9,'girl',NULL,'Ah Gal',1),(10,'chua',NULL,'Chua Chu Kang',1),(11,'yeo',NULL,'Yeo Chu Kang',1),(12,'ang',NULL,'Ang Ah Moh',1);
+INSERT INTO `user` VALUES (1,'admin','efacc4001e857f7eba4ae781c2932dedf843865e','Tan Ah Kow',1),(2,'lecturer','6a82d9d36486c4ec35be47fa46ccf033f6b207be','Lim Ah Thet',1),(3,'student','7acb896e2328413de34c2eff02398f02eae3c441','Chau Ah Kua',1),(4,'test',NULL,'Allen Wake',0),(5,'tester',NULL,'Shirley Ong',1),(6,'beng',NULL,'Ah Beng',1),(7,'lian',NULL,'Ah Lian',1),(8,'boy',NULL,'Ah Boy',1),(9,'girl',NULL,'Ah Gal',1),(10,'chua',NULL,'Chua Chu Kang',1),(11,'yeo',NULL,'Yeo Chu Kang',1),(12,'ang',NULL,'Ang Ah Moh',1);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -255,8 +255,8 @@ CREATE TABLE `user_module` (
   PRIMARY KEY (`Id`),
   KEY `user_uid_idx` (`User_Id`),
   KEY `module_mcode_idx` (`Module_Code`),
-  CONSTRAINT `um_uid` FOREIGN KEY (`User_Id`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `um_mcode` FOREIGN KEY (`Module_Code`) REFERENCES `module` (`Code`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `um_mcode` FOREIGN KEY (`Module_Code`) REFERENCES `module` (`Code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `um_uid` FOREIGN KEY (`User_Id`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -284,8 +284,8 @@ CREATE TABLE `user_role` (
   PRIMARY KEY (`Id`),
   KEY `user_uid_idx` (`User_Id`),
   KEY `role_rid_idx` (`Role_Id`),
-  CONSTRAINT `ur_uid` FOREIGN KEY (`User_Id`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `ur_rid` FOREIGN KEY (`Role_Id`) REFERENCES `role` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `ur_rid` FOREIGN KEY (`Role_Id`) REFERENCES `role` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `ur_uid` FOREIGN KEY (`User_Id`) REFERENCES `user` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -308,4 +308,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-11-10 23:52:36
+-- Dump completed on 2014-11-14  1:21:11

@@ -1,15 +1,17 @@
 package sg.edu.nus.iss.ems.service.impl;
 
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 import sg.edu.nus.iss.ems.entity.Question;
 import sg.edu.nus.iss.ems.entity.QuestionType;
-import sg.edu.nus.iss.ems.service.QuestionMgtService;
+import sg.edu.nus.iss.ems.service.QuestionMgmtService;
 
 @Stateless
-public class QuestionBean extends GenericDataAccessService<Question> implements QuestionMgtService {
+public class QuestionBean extends GenericDataAccessService<Question> implements QuestionMgmtService {
     
     private static final String FIND_BY_MODULE = 
             "select q from Question q where q.module.code = :moduleCode";
@@ -40,6 +42,9 @@ public class QuestionBean extends GenericDataAccessService<Question> implements 
         int qid = seqGenerator.next(question.getModule().getCode());
         question.setQid(qid);
         question.setStatus(1);
+        question.setCreatedOn(new Date());
+        question.getModule().setQuestionCount(question.getModule().getQuestionCount() + 1);
+        question.setVersion(1);
         super.create(question);
     }
     
@@ -60,5 +65,10 @@ public class QuestionBean extends GenericDataAccessService<Question> implements 
     @Override
     public List<QuestionType> findAllQuestionTypes() {
         return em.createNamedQuery(FIND_ALL_QUESTION_TYPES, QuestionType.class).getResultList();
+    }
+    
+    @Override
+    public QuestionType loadQuestionType(Serializable primaryKey) {
+        return em.find(QuestionType.class, primaryKey);
     }
 }

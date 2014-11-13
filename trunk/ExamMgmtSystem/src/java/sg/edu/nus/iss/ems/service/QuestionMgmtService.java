@@ -7,11 +7,12 @@ import sg.edu.nus.iss.ems.entity.Question;
 import sg.edu.nus.iss.ems.entity.QuestionType;
 
 @Local
-public interface QuestionMgtService {
+public interface QuestionMgmtService {
     public List<Question> findQuestionsByModule(String moduleCode, int offset, int size, boolean activeOnly);
     public Question load(Serializable primaryKey);
     public void create(Question question);
     public Question update(Question question);
     
     public List<QuestionType> findAllQuestionTypes();
+    public QuestionType loadQuestionType(Serializable primaryKey);
 }

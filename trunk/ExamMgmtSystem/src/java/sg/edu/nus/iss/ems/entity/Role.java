@@ -10,6 +10,8 @@ import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
@@ -34,8 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Role implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "Id")
     private Integer id;
     @Size(max = 255)
