@@ -1,8 +1,10 @@
 package sg.edu.nus.iss.ems.service.impl;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
+import sg.edu.nus.iss.ems.entity.Role;
 import sg.edu.nus.iss.ems.entity.User;
 import sg.edu.nus.iss.ems.service.UserAccountService;
 import sg.edu.nus.iss.ems.service.UserMgmtService;
@@ -14,6 +16,7 @@ public class UserBean extends GenericDataAccessService<User> implements UserAcco
     private static final String AUTH = 
             "select u from User u where u.username = :username and u.password = :password and u.status != 0";
     private static final String FIND_ALL = "User.findAll";
+    private static final String FIND_ALL_ROLES = "Role.findAll";
     private static final String FIND_BY_USERNAME = "User.findByUsername";
     
     @Override
@@ -25,6 +28,16 @@ public class UserBean extends GenericDataAccessService<User> implements UserAcco
     public void delete(User user) {
         user.setStatus(0);
         super.update(user);
+    }
+    
+    @Override
+    public List<Role> findAllRoles() {
+        return em.createNamedQuery(FIND_ALL_ROLES, Role.class).getResultList();
+    }
+    
+    @Override
+    public Role loadRole(Serializable primaryKey) {
+        return em.find(Role.class, primaryKey);
     }
     
     @Override
