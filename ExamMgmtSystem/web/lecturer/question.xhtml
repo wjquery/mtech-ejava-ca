@@ -103,6 +103,7 @@
                                     <f:selectItems value="#{questionMgmtView.findAllQuestionTypes()}" var="type"
                                                    itemLabel="#{type.type}"
                                                    itemValue="#{type}"/>
+                                    <p:ajax event="valueChange" update=":createForm"/>
                                 </p:selectOneMenu>
 
                                 <p:outputLabel value="Mark" for="mark" />
@@ -112,6 +113,20 @@
                                 <p:inputTextarea id="qnText" value="#{questionMgmtView.selectedQn.questionText}" title="Question Text" 
                                                  rows="3" cols="80"
                                              required="true" requiredMessage="Question Text is required!"/>
+                                
+                                <p:outputLabel value="Choices" for="qnChoices" 
+                                               rendered="#{questionMgmtView.selectedQn.questionType.id eq 1 or questionMgmtView.selectedQn.questionType.id eq 2}"/>
+                                <h:panelGroup id="qnChoices" 
+                                              rendered="#{questionMgmtView.selectedQn.questionType.id eq 1 or questionMgmtView.selectedQn.questionType.id eq 2}">
+                                    
+                                    <ui:repeat value="#{questionMgmtView.selectedQn.choices}" var="ch">
+                                        <p:outputLabel value="#{ch.choice}. #{ch.choiceText}"/><br/>
+                                    </ui:repeat>
+                                    
+                                    <p:outputLabel value="#{questionMgmtView.choice.choice}. "/>
+                                    <p:inputText value="#{questionMgmtView.choice.choiceText}"/>
+                                    <p:commandButton value="Add" actionListener="#{questionMgmtView.addChoice()}" update=":createForm"/>
+                                </h:panelGroup>
 
                             </p:panelGrid>
                             <p:commandButton actionListener="#{questionMgmtView.create}" value="#{msg['btn.save']}" update="createDisplay,:questions:qnList,:growl" oncomplete="handleSubmit(args,'createDialog');"/>

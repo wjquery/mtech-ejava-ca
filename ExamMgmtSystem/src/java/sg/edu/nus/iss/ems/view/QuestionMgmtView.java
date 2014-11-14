@@ -1,12 +1,14 @@
 package sg.edu.nus.iss.ems.view;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import sg.edu.nus.iss.ems.entity.McqChoice;
 import sg.edu.nus.iss.ems.entity.Module;
 import sg.edu.nus.iss.ems.entity.Question;
 import sg.edu.nus.iss.ems.entity.QuestionType;
@@ -23,17 +25,24 @@ public class QuestionMgmtView implements Serializable {
     @EJB
     private QuestionMgmtService questionBean;
     
+    private int offset = 0;
+    private int size = 1000;
     private List<Question> questions;
     private Question selectedQn;
     
     private Module module;
-    private int offset = 0;
-    private int size = 15;
+    private McqChoice choice;
+    private char choiceSeq;
 
     // setters & getters
     public List<Question> getQuestions() {
         //if (questions == null)
-            questions = questionBean.findQuestionsByModule(module==null?"":module.getCode(), offset, size, true);
+        if (module == null && loginView.getLoginUser() != null 
+                && !loginView.getLoginUser().getModules().isEmpty()) {
+            module = loginView.getLoginUser().getModules().get(0);
+            
+        }
+        questions = questionBean.findQuestionsByModule(module.getCode(), offset, size, true);
         return questions;
     }
 
@@ -52,11 +61,25 @@ public class QuestionMgmtView implements Serializable {
     public void setModule(Module module) {
         this.module = module;
     }
+
+    public McqChoice getChoice() {
+        return choice;
+    }
+
+    public void setChoice(McqChoice choice) {
+        this.choice = choice;
+    }
+    
     
     // CRUD methods
     public Question prepareCreate() {
         selectedQn = new Question();
         selectedQn.setCreatedBy(loginView.getLoginUser());
+        selectedQn.setChoices(new ArrayList<McqChoice>());
+        
+        choice = new McqChoice();
+        choiceSeq = 'A';
+        choice.setChoice(String.valueOf(choiceSeq));
         return selectedQn;
     }
     
@@ -74,6 +97,23 @@ public class QuestionMgmtView implements Serializable {
     // helper methods
     public List<QuestionType> findAllQuestionTypes() {
         return questionBean.findAllQuestionTypes();
+    }
+    
+    public void addChoice() {
+        selectedQn.getChoices().add(copy(choice));
+        
+        // reset choice
+        choice = new McqChoice();
+        choiceSeq = (char) (choiceSeq + 1);
+        choice.setChoice(String.valueOf(choiceSeq));
+    }
+    
+    private McqChoice copy(McqChoice choice) {
+        McqChoice copied = new McqChoice();
+        copied.setQuestion(selectedQn);
+        copied.setChoice(choice.getChoice());
+        copied.setChoiceText(choice.getChoiceText());
+        return copied;
     }
     
 }
