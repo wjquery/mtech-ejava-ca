@@ -1,19 +1,18 @@
 package sg.edu.nus.iss.ems.view;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import sg.edu.nus.iss.ems.entity.McqChoice;
 import sg.edu.nus.iss.ems.entity.Module;
 import sg.edu.nus.iss.ems.entity.Question;
+import sg.edu.nus.iss.ems.entity.QuestionPart;
 import sg.edu.nus.iss.ems.entity.QuestionType;
 import sg.edu.nus.iss.ems.entity.SubjectTag;
 import sg.edu.nus.iss.ems.service.QuestionMgmtService;
@@ -39,7 +38,8 @@ public class QuestionMgmtView implements Serializable {
     private McqChoice choice;
     private char choiceSeq;
     
-    private Question subQuestion;
+    private QuestionPart part;
+    private char partSeq;
 
     // setters & getters
     public List<Question> getQuestions() {
@@ -50,12 +50,18 @@ public class QuestionMgmtView implements Serializable {
             
         }
         questions = questionBean.findQuestionsByModule(module.getCode(), offset, size, true);
-        // sort choices in ABCD order
+        // sort choices and parts in ABCD order
         for (Question q : questions) {
             Collections.sort(q.getChoices(), new Comparator<McqChoice>() {
                 @Override
                 public int compare(McqChoice o1, McqChoice o2) {
                     return o1.getChoice().charAt(0) - o2.getChoice().charAt(0);
+                }
+            });
+            Collections.sort(q.getParts(), new Comparator<QuestionPart>() {
+                @Override
+                public int compare(QuestionPart o1, QuestionPart o2) {
+                    return o1.getPartName().charAt(0) - o2.getPartName().charAt(0);
                 }
             });
         }
@@ -86,14 +92,14 @@ public class QuestionMgmtView implements Serializable {
         this.choice = choice;
     }
 
-    public Question getSubQuestion() {
-        return subQuestion;
+    public QuestionPart getPart() {
+        return part;
     }
 
-    public void setSubQuestion(Question subQuestion) {
-        this.subQuestion = subQuestion;
+    public void setPart(QuestionPart part) {
+        this.part = part;
     }
-    
+
     
     // CRUD methods
     public Question prepareCreate() {
@@ -102,14 +108,26 @@ public class QuestionMgmtView implements Serializable {
         selectedQn.setChoices(new LinkedList<McqChoice>());
         selectedQn.setQuestionType(new QuestionType(1));
         selectedQn.setSubjectTags(new LinkedList<SubjectTag>());
+        selectedQn.setParts(new LinkedList<QuestionPart>());
         
         choice = new McqChoice();
         choiceSeq = 'A';
         choice.setChoice(String.valueOf(choiceSeq));
+        
+        part = new QuestionPart();
+        partSeq = 'A';
+        part.setPartName(String.valueOf(partSeq));
         return selectedQn;
     }
     
     public void create() {
+        if (selectedQn.getParts() != null && !selectedQn.getParts().isEmpty()) {
+            double sum = 0;
+            List<QuestionPart> partList = selectedQn.getParts();
+            for (QuestionPart p : partList)
+                sum += p.getQuestion().getMark();
+            selectedQn.setMark(sum);
+        }
         questionBean.create(selectedQn);
         if (!JsfUtil.isValidationFailed()) {
             questions = null;    // Invalidate list of questions to trigger re-query.
@@ -130,19 +148,37 @@ public class QuestionMgmtView implements Serializable {
             choiceSeq = 'A';
             choice.setChoice(String.valueOf(choiceSeq));
         }
+        
+        List<QuestionPart> parts = selectedQn.getParts();
+        if (parts != null && !parts.isEmpty()) {
+            int count = selectedQn.getParts().size();
+            String lastPart = selectedQn.getParts().get(count - 1).getPartName();
+            partSeq = (char)(lastPart.charAt(0) + 1);
+            part = new QuestionPart();
+            part.setPartName(String.valueOf(partSeq));
+        } else {
+            selectedQn.setParts(new LinkedList<QuestionPart>());
+            part = new QuestionPart();
+            partSeq = 'A';
+            part.setPartName(String.valueOf(partSeq));
+        }
     }
     
     public void update() {
         questionBean.update(selectedQn);
     }
     
-    // helper methods
+    // listeners
     public List<QuestionType> findAllQuestionTypes() {
         return questionBean.findAllQuestionTypes();
     }
     
     public List<SubjectTag> findAllSubjectTags() {
         return questionBean.findAllSubjectTags();
+    }
+    
+    public List<Question> findSubQuestions() {
+        return questionBean.findQuestionsByModuleAndTag(module.getCode(), selectedQn.getSubjectTags());
     }
     
     public void addChoice() {
@@ -154,6 +190,22 @@ public class QuestionMgmtView implements Serializable {
         choice.setChoice(String.valueOf(choiceSeq));
     }
     
+    public void addPart() {
+        // update total marks of parent question
+        selectedQn.getParts().add(copy(part));
+        double sum = 0;
+        List<QuestionPart> partList = selectedQn.getParts();
+        for (QuestionPart p : partList)
+            sum += p.getQuestion().getMark();
+        selectedQn.setMark(sum);
+        
+        // reset part
+        part = new QuestionPart();
+        partSeq = (char) (partSeq + 1);
+        part.setPartName(String.valueOf(partSeq));
+    }
+    
+    // helper methods
     private McqChoice copy(McqChoice choice) {
         McqChoice copied = new McqChoice();
         copied.setQuestion(selectedQn);
@@ -162,4 +214,11 @@ public class QuestionMgmtView implements Serializable {
         return copied;
     }
     
+    private QuestionPart copy(QuestionPart part) {
+        QuestionPart copied = new QuestionPart();
+        copied.setParent(selectedQn);
+        copied.setPartName(part.getPartName());
+        copied.setQuestion(part.getQuestion());
+        return copied;
+    }
 }
