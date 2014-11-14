@@ -3,6 +3,7 @@ package sg.edu.nus.iss.ems.service;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.Local;
+import sg.edu.nus.iss.ems.entity.Role;
 import sg.edu.nus.iss.ems.entity.User;
 
 @Local
@@ -13,5 +14,6 @@ public interface UserMgmtService {
     public User load(Serializable primaryKey);
     public List<User> findAll();
     
-    
+    public List<Role> findAllRoles();
+    public Role loadRole(Serializable primaryKey);
 }
