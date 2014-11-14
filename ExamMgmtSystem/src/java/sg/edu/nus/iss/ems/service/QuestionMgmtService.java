@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 import sg.edu.nus.iss.ems.entity.Question;
 import sg.edu.nus.iss.ems.entity.QuestionType;
+import sg.edu.nus.iss.ems.entity.SubjectTag;
 
 @Local
 public interface QuestionMgmtService {
@@ -15,4 +16,6 @@ public interface QuestionMgmtService {
     
     public List<QuestionType> findAllQuestionTypes();
     public QuestionType loadQuestionType(Serializable primaryKey);
+    public List<SubjectTag> findAllSubjectTags();
+    public SubjectTag loadSubjectTag(Serializable primaryKey);
 }

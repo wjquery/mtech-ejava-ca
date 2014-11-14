@@ -9,13 +9,16 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -76,12 +79,18 @@ public class Question implements Serializable {
     @ManyToOne
     private User createdBy;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
     private List<McqChoice> choices;
     
     @JoinColumn(name = "Type", referencedColumnName = "Id")
     @ManyToOne
     private QuestionType questionType;
+    
+    @ManyToMany
+    @JoinTable(name = "question_tag", 
+            joinColumns = @JoinColumn(name = "Question_Id", referencedColumnName = "Id"),
+            inverseJoinColumns = @JoinColumn(name = "Tag_Id", referencedColumnName = "Id"))
+    private List<SubjectTag> subjectTags;
     
     public Question() {
     }
@@ -176,6 +185,14 @@ public class Question implements Serializable {
     
     public void setQuestionType(QuestionType questionType) {
         this.questionType = questionType;
+    }
+
+    public List<SubjectTag> getSubjectTags() {
+        return subjectTags;
+    }
+
+    public void setSubjectTags(List<SubjectTag> subjectTags) {
+        this.subjectTags = subjectTags;
     }
     
     @Override

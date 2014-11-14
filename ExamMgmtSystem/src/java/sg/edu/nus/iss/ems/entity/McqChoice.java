@@ -37,7 +37,7 @@ public class McqChoice implements Serializable {
     @Column(name = "Choice_Text")
     private String choiceText;
     
-    @JoinColumn(name = "Question_Id", referencedColumnName = "QID")
+    @JoinColumn(name = "Question_Id", referencedColumnName = "Id")
     @ManyToOne
     private Question question;
 

@@ -2,6 +2,9 @@ package sg.edu.nus.iss.ems.view;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -12,6 +15,7 @@ import sg.edu.nus.iss.ems.entity.McqChoice;
 import sg.edu.nus.iss.ems.entity.Module;
 import sg.edu.nus.iss.ems.entity.Question;
 import sg.edu.nus.iss.ems.entity.QuestionType;
+import sg.edu.nus.iss.ems.entity.SubjectTag;
 import sg.edu.nus.iss.ems.service.QuestionMgmtService;
 import sg.edu.nus.iss.ems.util.JsfUtil;
 
@@ -31,8 +35,11 @@ public class QuestionMgmtView implements Serializable {
     private Question selectedQn;
     
     private Module module;
+    
     private McqChoice choice;
     private char choiceSeq;
+    
+    private Question subQuestion;
 
     // setters & getters
     public List<Question> getQuestions() {
@@ -43,6 +50,15 @@ public class QuestionMgmtView implements Serializable {
             
         }
         questions = questionBean.findQuestionsByModule(module.getCode(), offset, size, true);
+        // sort choices in ABCD order
+        for (Question q : questions) {
+            Collections.sort(q.getChoices(), new Comparator<McqChoice>() {
+                @Override
+                public int compare(McqChoice o1, McqChoice o2) {
+                    return o1.getChoice().charAt(0) - o2.getChoice().charAt(0);
+                }
+            });
+        }
         return questions;
     }
 
@@ -69,13 +85,23 @@ public class QuestionMgmtView implements Serializable {
     public void setChoice(McqChoice choice) {
         this.choice = choice;
     }
+
+    public Question getSubQuestion() {
+        return subQuestion;
+    }
+
+    public void setSubQuestion(Question subQuestion) {
+        this.subQuestion = subQuestion;
+    }
     
     
     // CRUD methods
     public Question prepareCreate() {
         selectedQn = new Question();
         selectedQn.setCreatedBy(loginView.getLoginUser());
-        selectedQn.setChoices(new ArrayList<McqChoice>());
+        selectedQn.setChoices(new LinkedList<McqChoice>());
+        selectedQn.setQuestionType(new QuestionType(1));
+        selectedQn.setSubjectTags(new LinkedList<SubjectTag>());
         
         choice = new McqChoice();
         choiceSeq = 'A';
@@ -90,6 +116,22 @@ public class QuestionMgmtView implements Serializable {
         }
     }
     
+    public void prepareEdit() {
+        List<McqChoice> choices = selectedQn.getChoices();
+        if (choices != null && !choices.isEmpty()) {
+            int count = selectedQn.getChoices().size();
+            String lastChoice = selectedQn.getChoices().get(count - 1).getChoice();
+            choiceSeq = (char)(lastChoice.charAt(0) + 1);
+            choice = new McqChoice();
+            choice.setChoice(String.valueOf(choiceSeq));
+        } else {
+            selectedQn.setChoices(new LinkedList<McqChoice>());
+            choice = new McqChoice();
+            choiceSeq = 'A';
+            choice.setChoice(String.valueOf(choiceSeq));
+        }
+    }
+    
     public void update() {
         questionBean.update(selectedQn);
     }
@@ -97,6 +139,10 @@ public class QuestionMgmtView implements Serializable {
     // helper methods
     public List<QuestionType> findAllQuestionTypes() {
         return questionBean.findAllQuestionTypes();
+    }
+    
+    public List<SubjectTag> findAllSubjectTags() {
+        return questionBean.findAllSubjectTags();
     }
     
     public void addChoice() {
