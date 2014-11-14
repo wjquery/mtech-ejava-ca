@@ -20,7 +20,7 @@
                     <p:panel style="min-height: 450px;">
                         <p:messages/>
                         
-                        <p:outputLabel for="module" value="Modules" />
+                        <p:outputLabel for="module" value="Select a Module" />&nbsp;&nbsp;
                         <p:selectOneMenu id="module" value="#{questionMgmtView.module}" converter="moduleConverter">
                             <f:selectItems value="#{loginView.loginUser.modules}" 
                                            var="m"
@@ -48,11 +48,11 @@
                                 <h:outputText value="#{qn.qid}" />
                             </p:column>
 
-                            <p:column headerText="Mark" sortBy="#{qn.questionType.type}" style="width: 5%;">
+                            <p:column headerText="Type" sortBy="#{qn.questionType.type}" style="width: 5%;">
                                 <h:outputText value="#{qn.questionType.type}" />
                             </p:column>
                             
-                            <p:column headerText="Type" sortBy="#{qn.mark}" style="width: 5%;">
+                            <p:column headerText="Mark" sortBy="#{qn.mark}" style="width: 5%;">
                                 <h:outputText value="#{qn.mark}" />
                             </p:column>
 
@@ -70,32 +70,32 @@
                                 <p:commandButton id="editButton" 
                                              icon="ui-icon-pencil" 
                                              value="#{msg['btn.edit']}" 
+                                             actionListener="#{questionMgmtView.prepareEdit}"
                                              update=":editForm" 
                                              oncomplete="PF('editDialog').show()" 
                                              disabled="#{empty questionMgmtView.selectedQn}"/>
                             </f:facet>
                         </p:dataTable>
-                        
-                        <ui:repeat id="qnChoices" value="#{questionMgmtView.selectedQn.choices}" var="choice">
-                            #{choice.choice} - #{choice.choiceText} <br/>
-                        </ui:repeat>
-                        
-                        
-                        
-                        
-                        
                     </p:panel>
                 </h:form>
                 
                 <p:dialog id="createDlg" widgetVar="createDialog" modal="true" resizable="false" appendTo="@(body)" header="#{msg['title.mgmt.question.create']}">
                     <h:form id="createForm">
                         <h:panelGroup id="createDisplay">
-                            <p:panelGrid columns="2" rendered="#{questionMgmtView.selectedQn != null}">
+                            <p:panelGrid columns="2" rendered="#{questionMgmtView.selectedQn != null}" style="border: none;">
                                 <p:outputLabel value="Module" for="module" />
                                 <p:selectOneMenu id="module" value="#{questionMgmtView.selectedQn.module}"  
                                                  converter="moduleConverter">
                                     <f:selectItem itemLabel="#{questionMgmtView.module.code}" itemValue="#{questionMgmtView.module}"/>
                                 </p:selectOneMenu>
+                                
+                                <p:outputLabel value="Tags" for="tags" />
+                                <p:selectCheckboxMenu id="tags" value="#{questionMgmtView.selectedQn.subjectTags}"
+                                                  converter="subjectTagConverter"
+                                                  label="Tags" filter="true" filterMatchMode="startsWith">
+                                    <f:selectItems value="#{questionMgmtView.findAllSubjectTags()}" var="tag"
+                                                   itemLabel="#{tag.tag}" itemValue="#{tag}"/>
+                                </p:selectCheckboxMenu>
                                 
                                 <p:outputLabel value="Question Type" for="type" />
                                 <p:selectOneMenu id="type" value="#{questionMgmtView.selectedQn.questionType}" 
@@ -107,30 +107,39 @@
                                 </p:selectOneMenu>
 
                                 <p:outputLabel value="Mark" for="mark" />
-                                <p:inputText id="mark" value="#{questionMgmtView.selectedQn.mark}" title="Mark" />
+                                <p:inputText id="mark" value="#{questionMgmtView.selectedQn.mark}" title="Mark"
+                                             required="true" requiredMessage="Question Mark is required!">
+                                    <f:convertNumber maxFractionDigits="1"/>
+                                </p:inputText>
 
                                 <p:outputLabel value="Question Text" for="qnText" />
                                 <p:inputTextarea id="qnText" value="#{questionMgmtView.selectedQn.questionText}" title="Question Text" 
                                                  rows="3" cols="80"
-                                             required="true" requiredMessage="Question Text is required!"/>
+                                                 required="true" requiredMessage="Question Text is required!"/>
                                 
-                                <p:outputLabel value="Choices" for="qnChoices" 
-                                               rendered="#{questionMgmtView.selectedQn.questionType.id eq 1 or questionMgmtView.selectedQn.questionType.id eq 2}"/>
-                                <h:panelGroup id="qnChoices" 
-                                              rendered="#{questionMgmtView.selectedQn.questionType.id eq 1 or questionMgmtView.selectedQn.questionType.id eq 2}">
+                                <p:outputLabel value="Choices" for="qnChoices" rendered="#{questionMgmtView.selectedQn.questionType.id eq 1 
+                                                           or questionMgmtView.selectedQn.questionType.id eq 2}"/>
+                                <h:panelGroup id="qnChoices" rendered="#{questionMgmtView.selectedQn.questionType.id eq 1 
+                                                          or questionMgmtView.selectedQn.questionType.id eq 2}">
                                     
                                     <ui:repeat value="#{questionMgmtView.selectedQn.choices}" var="ch">
-                                        <p:outputLabel value="#{ch.choice}. #{ch.choiceText}"/><br/>
+                                        <p:outputLabel value="#{ch.choice}. #{ch.choiceText}" style="margin: 2px;"/><br/>
                                     </ui:repeat>
                                     
-                                    <p:outputLabel value="#{questionMgmtView.choice.choice}. "/>
-                                    <p:inputText value="#{questionMgmtView.choice.choiceText}"/>
+                                    <p:outputLabel value="#{questionMgmtView.choice.choice}"/>.&nbsp;
+                                    <p:inputText value="#{questionMgmtView.choice.choiceText}"/>&nbsp;&nbsp;
                                     <p:commandButton value="Add" actionListener="#{questionMgmtView.addChoice()}" update=":createForm"/>
                                 </h:panelGroup>
-
+                                
+                                <h:panelGroup/>
+                                <h:panelGroup>
+                                    <p:commandButton actionListener="#{questionMgmtView.create}" value="#{msg['btn.save']}" 
+                                                     update="createDisplay,:questions:qnList,:growl" 
+                                                     oncomplete="handleSubmit(args,'createDialog');"/>
+                                    &nbsp;&nbsp;
+                                    <p:commandButton value="Cancel" onclick="PF('createDialog').hide()"/>
+                                </h:panelGroup>
                             </p:panelGrid>
-                            <p:commandButton actionListener="#{questionMgmtView.create}" value="#{msg['btn.save']}" update="createDisplay,:questions:qnList,:growl" oncomplete="handleSubmit(args,'createDialog');"/>
-                            <p:commandButton value="Cancel" onclick="PF('createDialog').hide()"/>
                         </h:panelGroup>
                     </h:form>
                 </p:dialog>
@@ -145,12 +154,21 @@
                                     <f:selectItem itemLabel="#{questionMgmtView.module.code}" itemValue="#{questionMgmtView.module}"/>
                                 </p:selectOneMenu>
                                 
+                                <p:outputLabel value="Tags" for="tags" />
+                                <p:selectCheckboxMenu id="tags" value="#{questionMgmtView.selectedQn.subjectTags}"
+                                                  converter="subjectTagConverter"
+                                                  label="Tags" filter="true" filterMatchMode="startsWith">
+                                    <f:selectItems value="#{questionMgmtView.findAllSubjectTags()}" var="tag"
+                                                   itemLabel="#{tag.tag}" itemValue="#{tag}"/>
+                                </p:selectCheckboxMenu>
+                                
                                 <p:outputLabel value="Question Type" for="type" />
                                 <p:selectOneMenu id="type" value="#{questionMgmtView.selectedQn.questionType}" 
                                                  converter="questionTypeConverter">
                                     <f:selectItems value="#{questionMgmtView.findAllQuestionTypes()}" var="type"
                                                    itemLabel="#{type.type}"
                                                    itemValue="#{type}"/>
+                                    <p:ajax event="valueChange" update=":editForm"/>
                                 </p:selectOneMenu>
 
                                 <p:outputLabel value="Mark" for="mark" />
@@ -160,10 +178,30 @@
                                 <p:inputTextarea id="qnText" value="#{questionMgmtView.selectedQn.questionText}" title="Question Text" 
                                                  rows="3" cols="80"
                                              required="true" requiredMessage="Question Text is required!"/>
-
+                                
+                                <p:outputLabel value="Choices" for="qnChoices" rendered="#{questionMgmtView.selectedQn.questionType.id eq 1 
+                                                           or questionMgmtView.selectedQn.questionType.id eq 2}"/>
+                                <h:panelGroup id="qnChoices" rendered="#{questionMgmtView.selectedQn.questionType.id eq 1 
+                                                          or questionMgmtView.selectedQn.questionType.id eq 2}">
+                                    
+                                    <ui:repeat value="#{questionMgmtView.selectedQn.choices}" var="ch">
+                                        <p:outputLabel value="#{ch.choice}. #{ch.choiceText}" style="margin: 2px;"/><br/>
+                                    </ui:repeat>
+                                    
+                                    <p:outputLabel value="#{questionMgmtView.choice.choice}"/>.&nbsp;
+                                    <p:inputText value="#{questionMgmtView.choice.choiceText}"/>&nbsp;&nbsp;
+                                    <p:commandButton value="Add" actionListener="#{questionMgmtView.addChoice()}" update=":editForm"/>
+                                </h:panelGroup>
+                                
+                                <h:panelGroup/>
+                                <h:panelGroup>
+                                    <p:commandButton actionListener="#{questionMgmtView.update}" value="#{msg['btn.save']}" 
+                                                     update="editDisplay,:questions:qnList,:growl" 
+                                                     oncomplete="handleSubmit(args,'editDialog');"/>
+                                    &nbsp;&nbsp;
+                                    <p:commandButton value="Cancel" onclick="PF('editDialog').hide()"/>
+                                </h:panelGroup>
                             </p:panelGrid>
-                            <p:commandButton actionListener="#{questionMgmtView.update}" value="#{msg['btn.save']}" update="editDisplay,:questions:qnList,:growl" oncomplete="handleSubmit(args,'createDialog');"/>
-                            <p:commandButton value="Cancel" onclick="PF('editDialog').hide()"/>
                         </h:panelGroup>
                     </h:form>
                 </p:dialog>

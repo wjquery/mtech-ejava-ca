@@ -100,3 +100,14 @@ div.panel {
     -moz-box-shadow: 0 0 15px #AAAAAA;
     box-shadow: 0 0 15px #AAAAAA;
 }
+
+/*
+.ui-panelgrid tr, .ui-panelgrid td{
+  border:none !important;
+}
+
+.ui-datatable .ui-datatable-data tr,.ui-datatable .ui-datatable-data-empty tr,.ui-datatable .ui-datatable-data td,.ui-datatable .ui-datatable-data-empty td{
+  border:1px solid !important;
+}
+*/
+
