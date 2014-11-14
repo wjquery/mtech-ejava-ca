@@ -6,16 +6,17 @@
 package sg.edu.nus.iss.ems.entity;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,33 +26,35 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Wenyan
  */
 @Entity
-@Table(name = "subject_tag")
+@Table(name = "question_part")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "SubjectTag.findAll", query = "SELECT s FROM SubjectTag s WHERE s.status = 1"),
-    @NamedQuery(name = "SubjectTag.findById", query = "SELECT s FROM SubjectTag s WHERE s.id = :id AND s.status = 1"),
-    @NamedQuery(name = "SubjectTag.findByTag", query = "SELECT s FROM SubjectTag s WHERE s.tag = :tag AND s.status = 1"),
-    @NamedQuery(name = "SubjectTag.findByStatus", query = "SELECT s FROM SubjectTag s WHERE s.status = :status")})
-public class SubjectTag implements Serializable {
+    @NamedQuery(name = "QuestionPart.findAll", query = "SELECT q FROM QuestionPart q"),
+    @NamedQuery(name = "QuestionPart.findById", query = "SELECT q FROM QuestionPart q WHERE q.id = :id"),
+    @NamedQuery(name = "QuestionPart.findByPartName", query = "SELECT q FROM QuestionPart q WHERE q.partName = :partName")})
+public class QuestionPart implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "Id")
     private Integer id;
-    @Size(max = 255)
-    @Column(name = "Tag")
-    private String tag;
-    @Column(name = "Status")
-    private Integer status;
-
-    @ManyToMany(mappedBy = "subjectTags")
-    private List<Question> questions;
+    @Size(max = 1)
+    @Column(name = "PartName")
+    private String partName;
     
-    public SubjectTag() {
+    @JoinColumn(name = "ParentId", referencedColumnName = "Id")
+    @ManyToOne
+    private Question parent;
+    
+    @JoinColumn(name = "QID", referencedColumnName = "Id")
+    @ManyToOne
+    private Question question;
+
+    public QuestionPart() {
     }
 
-    public SubjectTag(Integer id) {
+    public QuestionPart(Integer id) {
         this.id = id;
     }
 
@@ -63,28 +66,28 @@ public class SubjectTag implements Serializable {
         this.id = id;
     }
 
-    public String getTag() {
-        return tag;
+    public String getPartName() {
+        return partName;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setPartName(String partName) {
+        this.partName = partName;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Question getParent() {
+        return parent;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setParent(Question parent) {
+        this.parent = parent;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
+    public Question getQuestion() {
+        return question;
     }
 
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 
     @Override
@@ -97,10 +100,10 @@ public class SubjectTag implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SubjectTag)) {
+        if (!(object instanceof QuestionPart)) {
             return false;
         }
-        SubjectTag other = (SubjectTag) object;
+        QuestionPart other = (QuestionPart) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -109,7 +112,7 @@ public class SubjectTag implements Serializable {
 
     @Override
     public String toString() {
-        return "sg.edu.nus.iss.ems.entity.SubjectTag[ id=" + id + " ]";
+        return "sg.edu.nus.iss.ems.entity.QuestionPart[ id=" + id + " ]";
     }
     
 }

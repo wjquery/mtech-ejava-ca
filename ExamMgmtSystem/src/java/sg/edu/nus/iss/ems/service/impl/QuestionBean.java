@@ -42,6 +42,8 @@ public class QuestionBean extends GenericDataAccessService<Question> implements 
         return q.getResultList();
     }
     
+    // find potential questions for sub parts
+    @Override
     public List<Question> findQuestionsByModuleAndTag(String moduleCode, List<SubjectTag> tags) {
         if (tags != null && !tags.isEmpty()) {
             String tagStr = "";
@@ -53,7 +55,7 @@ public class QuestionBean extends GenericDataAccessService<Question> implements 
             }
             TypedQuery<Question> q = em.createQuery(FIND_BY_MODULE_AND_TAG, Question.class)
                     .setParameter("moduleCode", moduleCode)
-                    .setParameter(":tags", tagStr);
+                    .setParameter("tags", tagStr);
             return q.getResultList();
         } else {
             TypedQuery<Question> q = em.createQuery(FIND_ACTIVE_BY_MODULE, Question.class)
@@ -73,6 +75,9 @@ public class QuestionBean extends GenericDataAccessService<Question> implements 
         // clear choices if type is not MCQ
         if (question.getQuestionType().getId() > 2)
             question.setChoices(null);
+        // clear parts if type is not Multipart
+        if (question.getQuestionType().getId() != 4)
+            question.setParts(null);
         super.create(question);
     }
     
@@ -91,6 +96,9 @@ public class QuestionBean extends GenericDataAccessService<Question> implements 
         // clear choices if type is not MCQ
         if (question.getQuestionType().getId() > 2)
             question.setChoices(null);
+        // clear parts if type is not Multipart
+        if (question.getQuestionType().getId() != 4)
+            question.setParts(null);
         super.create(question);
         return question;
     }

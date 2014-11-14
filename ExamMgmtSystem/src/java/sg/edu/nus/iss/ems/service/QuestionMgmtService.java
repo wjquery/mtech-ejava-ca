@@ -10,6 +10,7 @@ import sg.edu.nus.iss.ems.entity.SubjectTag;
 @Local
 public interface QuestionMgmtService {
     public List<Question> findQuestionsByModule(String moduleCode, int offset, int size, boolean activeOnly);
+    public List<Question> findQuestionsByModuleAndTag(String moduleCode, List<SubjectTag> tags);
     public Question load(Serializable primaryKey);
     public void create(Question question);
     public Question update(Question question);

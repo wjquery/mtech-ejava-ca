@@ -92,6 +92,9 @@ public class Question implements Serializable {
             inverseJoinColumns = @JoinColumn(name = "Tag_Id", referencedColumnName = "Id"))
     private List<SubjectTag> subjectTags;
     
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.PERSIST)
+    private List<QuestionPart> parts;
+    
     public Question() {
     }
 
@@ -193,6 +196,14 @@ public class Question implements Serializable {
 
     public void setSubjectTags(List<SubjectTag> subjectTags) {
         this.subjectTags = subjectTags;
+    }
+
+    public List<QuestionPart> getParts() {
+        return parts;
+    }
+
+    public void setParts(List<QuestionPart> parts) {
+        this.parts = parts;
     }
     
     @Override

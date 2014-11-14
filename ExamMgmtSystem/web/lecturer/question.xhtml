@@ -95,6 +95,7 @@
                                                   label="Tags" filter="true" filterMatchMode="startsWith">
                                     <f:selectItems value="#{questionMgmtView.findAllSubjectTags()}" var="tag"
                                                    itemLabel="#{tag.tag}" itemValue="#{tag}"/>
+                                    <p:ajax update=":createForm"/>
                                 </p:selectCheckboxMenu>
                                 
                                 <p:outputLabel value="Question Type" for="type" />
@@ -129,6 +130,25 @@
                                     <p:outputLabel value="#{questionMgmtView.choice.choice}"/>.&nbsp;
                                     <p:inputText value="#{questionMgmtView.choice.choiceText}"/>&nbsp;&nbsp;
                                     <p:commandButton value="Add" actionListener="#{questionMgmtView.addChoice()}" update=":createForm"/>
+                                </h:panelGroup>
+                                
+                                <p:outputLabel value="Parts" for="subParts" rendered="#{questionMgmtView.selectedQn.questionType.id eq 4}"/>
+                                <h:panelGroup id="subParts" rendered="#{questionMgmtView.selectedQn.questionType.id eq 4}">
+                                    
+                                    <ui:repeat value="#{questionMgmtView.selectedQn.parts}" var="pa">
+                                        <p:outputLabel value="Part #{pa.partName}. Qn#{pa.question.qid} (#{pa.question.mark}')" 
+                                                       style="margin: 2px;"
+                                                       title="#{pa.question.questionText}"/><br/>
+                                    </ui:repeat>
+                                    
+                                    <p:outputLabel value="#{questionMgmtView.part.partName}"/>.&nbsp;
+                                    <p:selectOneMenu value="#{questionMgmtView.part.question}"
+                                                     converter="questionConverter">
+                                        <f:selectItems value="#{questionMgmtView.findSubQuestions()}" var="subqn"
+                                                       itemLabel="#{subqn.qid}"
+                                                       itemValue="#{subqn}"/>
+                                    </p:selectOneMenu>&nbsp;&nbsp;
+                                    <p:commandButton value="Add" actionListener="#{questionMgmtView.addPart()}" update=":createForm"/>
                                 </h:panelGroup>
                                 
                                 <h:panelGroup/>
@@ -191,6 +211,25 @@
                                     <p:outputLabel value="#{questionMgmtView.choice.choice}"/>.&nbsp;
                                     <p:inputText value="#{questionMgmtView.choice.choiceText}"/>&nbsp;&nbsp;
                                     <p:commandButton value="Add" actionListener="#{questionMgmtView.addChoice()}" update=":editForm"/>
+                                </h:panelGroup>
+                                
+                                <p:outputLabel value="Parts" for="subParts" rendered="#{questionMgmtView.selectedQn.questionType.id eq 4}"/>
+                                <h:panelGroup id="subParts" rendered="#{questionMgmtView.selectedQn.questionType.id eq 4}">
+                                    
+                                    <ui:repeat value="#{questionMgmtView.selectedQn.parts}" var="pa">
+                                        <p:outputLabel value="Part #{pa.partName}. Qn#{pa.question.qid} (#{pa.question.mark}')" 
+                                                       style="margin: 2px;"
+                                                       title="#{pa.question.questionText}"/><br/>
+                                    </ui:repeat>
+                                    
+                                    <p:outputLabel value="#{questionMgmtView.part.partName}"/>.&nbsp;
+                                    <p:selectOneMenu value="#{questionMgmtView.part.question}"
+                                                     converter="questionConverter">
+                                        <f:selectItems value="#{questionMgmtView.findSubQuestions()}" var="subqn"
+                                                       itemLabel="#{subqn.qid}"
+                                                       itemValue="#{subqn}"/>
+                                    </p:selectOneMenu>&nbsp;&nbsp;
+                                    <p:commandButton value="Add" actionListener="#{questionMgmtView.addPart()}" update=":createForm"/>
                                 </h:panelGroup>
                                 
                                 <h:panelGroup/>
