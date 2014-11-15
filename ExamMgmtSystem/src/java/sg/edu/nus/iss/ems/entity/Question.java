@@ -5,6 +5,7 @@
  */
 package sg.edu.nus.iss.ems.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -73,26 +74,32 @@ public class Question implements Serializable {
     
     @JoinColumn(name = "Module_Code", referencedColumnName = "Code")
     @ManyToOne
+     @JsonManagedReference
     private Module module;
     
     @JoinColumn(name = "Created_By", referencedColumnName = "Id")
     @ManyToOne
+     @JsonManagedReference
     private User createdBy;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
+    @JsonManagedReference
     private List<McqChoice> choices;
     
     @JoinColumn(name = "Type", referencedColumnName = "Id")
     @ManyToOne
+     @JsonManagedReference
     private QuestionType questionType;
     
     @ManyToMany
     @JoinTable(name = "question_tag", 
             joinColumns = @JoinColumn(name = "Question_Id", referencedColumnName = "Id"),
             inverseJoinColumns = @JoinColumn(name = "Tag_Id", referencedColumnName = "Id"))
+    @JsonManagedReference
     private List<SubjectTag> subjectTags;
     
     @OneToMany(mappedBy = "parent", cascade = CascadeType.PERSIST)
+    @JsonManagedReference
     private List<QuestionPart> parts;
     
     @ManyToMany(mappedBy = "questions")

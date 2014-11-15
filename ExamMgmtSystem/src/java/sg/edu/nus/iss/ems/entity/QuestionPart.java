@@ -5,6 +5,7 @@
  */
 package sg.edu.nus.iss.ems.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -44,10 +45,12 @@ public class QuestionPart implements Serializable {
     
     @JoinColumn(name = "ParentId", referencedColumnName = "Id")
     @ManyToOne
+    @JsonBackReference
     private Question parent;
     
     @JoinColumn(name = "QID", referencedColumnName = "Id")
     @ManyToOne
+    @JsonBackReference
     private Question question;
 
     public QuestionPart() {

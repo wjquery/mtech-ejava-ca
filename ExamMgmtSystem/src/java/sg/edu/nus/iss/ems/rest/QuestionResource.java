@@ -5,8 +5,12 @@
  */
 package sg.edu.nus.iss.ems.rest;
 
-import javax.ejb.EJB;
+import java.util.List;
 import javax.enterprise.context.RequestScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -14,19 +18,27 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
-import sg.edu.nus.iss.ems.service.impl.QuestionBean;
+import sg.edu.nus.iss.ems.entity.Question;
 
-/**
- *
- * @author tmswj
- */
+
 @RequestScoped
 @Path("/question")
 public class QuestionResource {
+     @PersistenceContext
+    protected EntityManager em;
     
-    @EJB QuestionBean questionBean;
     
     @Context SecurityContext secCtx;
+    
+    @GET
+    @Path("/{qid:\\d+}")
+    public Question get(@PathParam("qid") int qid){
+       TypedQuery<Question> q = em.createNamedQuery("Question.findById", Question.class)
+                .setParameter("id", qid);
+       List<Question> result = q.getResultList();
+       if(result.isEmpty()) return null;
+       else return result.get(0);
+    }
     
     @POST
     public Response create(){
