@@ -21,7 +21,7 @@
                         <p:messages/>
                         
                         <p:outputLabel for="module" value="Modules" />
-                        <p:selectOneMenu id="module" value="#{moduleMgmtView.module}">
+                        <p:selectOneMenu id="module" value="#{moduleMgmtView.selectedModule}">
                             <f:selectItems value="#{moduleMgmtView.modules()}" 
                                            var="m"
                                            itemLabel="#{m.name}"

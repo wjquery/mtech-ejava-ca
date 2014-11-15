@@ -104,6 +104,7 @@ public class QuestionMgmtView implements Serializable {
     // CRUD methods
     public Question prepareCreate() {
         selectedQn = new Question();
+        selectedQn.setMark(0.0);
         selectedQn.setCreatedBy(loginView.getLoginUser());
         selectedQn.setChoices(new LinkedList<McqChoice>());
         selectedQn.setQuestionType(new QuestionType(1));
