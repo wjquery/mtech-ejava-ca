@@ -5,6 +5,7 @@
  */
 package sg.edu.nus.iss.ems.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -46,6 +47,7 @@ public class SubjectTag implements Serializable {
     private Integer status;
 
     @ManyToMany(mappedBy = "subjectTags")
+    @JsonBackReference
     private List<Question> questions;
     
     @ManyToMany(mappedBy = "subjectTags")

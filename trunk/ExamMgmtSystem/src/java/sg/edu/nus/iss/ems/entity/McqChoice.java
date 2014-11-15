@@ -1,5 +1,6 @@
 package sg.edu.nus.iss.ems.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -39,6 +40,7 @@ public class McqChoice implements Serializable {
     
     @JoinColumn(name = "Question_Id", referencedColumnName = "Id")
     @ManyToOne
+     @JsonBackReference
     private Question question;
 
     public McqChoice() {
