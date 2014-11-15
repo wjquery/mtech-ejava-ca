@@ -16,20 +16,90 @@
                 <ems:menu/>
             </ui:define>
             <ui:define name="content">
-                <h:form>
-                    <p:panel style="height: 450px;">
+                <h:form id="papers">
+                    <p:panel style="min-height: 450px;">
                         <p:messages/>
                         
-                        <p:outputLabel for="module" value="Modules" />
-                        <p:selectOneMenu id="module" value="#{moduleMgmtView.selectedModule}">
-                            <f:selectItems value="#{moduleMgmtView.modules()}" 
+                        <p:outputLabel for="module" value="Select a Module" />
+                        <p:selectOneMenu id="module" value="#{examTemplateMgmtView.module}" converter="moduleConverter">
+                            <f:selectItems value="#{loginView.loginUser.modules}" 
                                            var="m"
-                                           itemLabel="#{m.name}"
-                                           itemValue="#{m.code}"/>
-                            <f:ajax execute="@form" render="@form" />
+                                           itemLabel="#{m.code} - #{m.name}"
+                                           itemValue="#{m}"/>
+                            <f:ajax render=":papers:templateList" />
                         </p:selectOneMenu>
+                        
+                        
+                        <p:dataTable id="templateList" var="template" value="#{examTemplateMgmtView.templates}"
+                                     style="width: 80%; margin: auto;"
+                                     selectionMode="single" 
+                                     selection="#{examTemplateMgmtView.selectedTemplate}"
+                                     paginator="true"
+                                     rowKey="#{template.id}"
+                                     rows="10"
+                                     rowsPerPageTemplate="10,20,30,40,50">
+                            
+                            <p:ajax event="rowSelect"   update="createButton editButton"/>
+                            <p:ajax event="rowUnselect" update="createButton editButton"/>
+
+                            <f:facet name="header">
+                                Exam Template Management
+                            </f:facet>
+                            <p:column headerText="Module" sortBy="#{template.module.code}" style="width: 8%;">
+                                <h:outputText value="#{template.module.code}" />
+                            </p:column>
+
+                            <p:column headerText="Name" sortBy="#{template.name}">
+                                <h:outputText value="#{template.name}" />
+                            </p:column>
+                            
+                            <p:column headerText="Creation Time" sortBy="#{qn.mark}" style="width: 15%;">
+                                <h:outputText value="#{template.createdOn}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" />
+                                </h:outputText>
+                            </p:column>
+
+                            <f:facet name="footer">
+                                <p:commandButton id="createButton" 
+                                                 icon="ui-icon-plus"
+                                                 value="#{msg['btn.create']}" 
+                                                 actionListener="#{questionMgmtView.prepareCreate}"
+                                                 update=""
+                                                 oncomplete="PF('createDialog').show()"/>
+                                <p:commandButton id="editButton" 
+                                             icon="ui-icon-pencil" 
+                                             value="#{msg['btn.edit']}" 
+                                             actionListener="#{questionMgmtView.prepareEdit}"
+                                             update="" 
+                                             oncomplete="PF('editDialog').show()" 
+                                             disabled="#{empty questionMgmtView.selectedQn}"/>
+                            </f:facet>
+                        </p:dataTable>
+                        
+                        
+                        
                     </p:panel>
                 </h:form>
+                
+                <!--h:form id="sessions">
+                    <p:panel style="min-height: 450px;">
+                        <p:messages/>
+                        
+                        <p:outputLabel for="module" value="Select a Module" />
+                        <p:selectOneMenu id="module" value="#{moduleMgmtView.selectedModule}">
+                            <f:selectItems value="#{moduleMgmtView.modules}" 
+                                           var="m"
+                                           itemLabel="#{m.name}"
+                                           itemValue="#{m}"/>
+                            <f:ajax execute="@form" render="@form" />
+                        </p:selectOneMenu>
+                        
+                        
+                        
+                        
+                        
+                    </p:panel>
+                </h:form-->
             </ui:define>
         </ui:composition>
     </h:body>

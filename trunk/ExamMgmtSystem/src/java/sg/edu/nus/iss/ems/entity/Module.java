@@ -57,6 +57,9 @@ public class Module implements Serializable {
     @ManyToMany(mappedBy = "modules")
     private Set<User> users;
 
+    @OneToMany(mappedBy = "module")
+    private List<ExamTemplate> templates;
+    
     public Module() {
     }
 
@@ -112,6 +115,14 @@ public class Module implements Serializable {
     
     public Integer getStatus() {
         return status;
+    }
+
+    public List<ExamTemplate> getTemplates() {
+        return templates;
+    }
+
+    public void setTemplates(List<ExamTemplate> templates) {
+        this.templates = templates;
     }
     
     @Override

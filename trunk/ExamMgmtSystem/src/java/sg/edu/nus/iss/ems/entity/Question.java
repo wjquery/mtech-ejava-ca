@@ -95,6 +95,9 @@ public class Question implements Serializable {
     @OneToMany(mappedBy = "parent", cascade = CascadeType.PERSIST)
     private List<QuestionPart> parts;
     
+    @ManyToMany(mappedBy = "questions")
+    private List<ExamSection> sections;
+    
     public Question() {
     }
 
@@ -204,6 +207,14 @@ public class Question implements Serializable {
 
     public void setParts(List<QuestionPart> parts) {
         this.parts = parts;
+    }
+
+    public List<ExamSection> getSections() {
+        return sections;
+    }
+
+    public void setSections(List<ExamSection> sections) {
+        this.sections = sections;
     }
     
     @Override

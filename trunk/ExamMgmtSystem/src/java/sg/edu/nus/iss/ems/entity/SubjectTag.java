@@ -48,6 +48,9 @@ public class SubjectTag implements Serializable {
     @ManyToMany(mappedBy = "subjectTags")
     private List<Question> questions;
     
+    @ManyToMany(mappedBy = "subjectTags")
+    private List<ExamSection> sections;
+    
     public SubjectTag() {
     }
 
@@ -87,6 +90,14 @@ public class SubjectTag implements Serializable {
         this.questions = questions;
     }
 
+    public List<ExamSection> getSections() {
+        return sections;
+    }
+
+    public void setSections(List<ExamSection> sections) {
+        this.sections = sections;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -44,11 +44,11 @@
                             <f:facet name="header">
                                 Question Management
                             </f:facet>
-                            <p:column headerText="Qn No" sortBy="#{qn.qid}" style="width: 5%;">
+                            <p:column headerText="Qn No" sortBy="#{qn.qid}" style="width: 8%;">
                                 <h:outputText value="#{qn.qid}" />
                             </p:column>
 
-                            <p:column headerText="Type" sortBy="#{qn.questionType.type}" style="width: 5%;">
+                            <p:column headerText="Type" sortBy="#{qn.questionType.id}" style="width: 8%;">
                                 <h:outputText value="#{qn.questionType.type}" />
                             </p:column>
                             
@@ -56,7 +56,7 @@
                                 <h:outputText value="#{qn.mark}" />
                             </p:column>
 
-                            <p:column headerText="Question" sortBy="#{qn.questionText}">
+                            <p:column headerText="Question">
                                 <h:outputText value="#{qn.questionText}" />
                             </p:column>
                             
