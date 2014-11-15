@@ -61,7 +61,7 @@ public class UserBean extends GenericDataAccessService<User> implements UserAcco
     
     @Override
     public String resetPwd(String username) {
-        TypedQuery<User> q = em.createQuery(FIND_BY_USERNAME, User.class)
+        TypedQuery<User> q = em.createNamedQuery(FIND_BY_USERNAME, User.class)
                 .setParameter("username", username);
         User user = unique(q);
         if (user != null) {
@@ -70,6 +70,14 @@ public class UserBean extends GenericDataAccessService<User> implements UserAcco
             return newPwd;
         }
         return null;
+    }
+    
+     @Override
+    public boolean isUserExisted(String username) {
+        TypedQuery<User> q = em.createNamedQuery(FIND_BY_USERNAME, User.class)
+                .setParameter("username", username);
+        List<User> result = q.getResultList();
+        return result.isEmpty();
     }
     
 }

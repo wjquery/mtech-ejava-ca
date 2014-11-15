@@ -37,6 +37,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "User.findByUsername", query = "SELECT u FROM User u WHERE u.username = :username AND u.status != 0"),
     @NamedQuery(name = "User.findByPassword", query = "SELECT u FROM User u WHERE u.password = :password AND u.status != 0")})
 public class User implements Serializable {
+    
+    public static final Integer USER_STATUS_DISABLED = 0;
+    public static final Integer USER_STATUS_NORMAL = 1;
+    public static final Integer USER_STATUS_NEW = 2;
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = IDENTITY)

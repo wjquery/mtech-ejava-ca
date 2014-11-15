@@ -16,4 +16,6 @@ public interface UserMgmtService {
     
     public List<Role> findAllRoles();
     public Role loadRole(Serializable primaryKey);
+    
+    public boolean isUserExisted(String username);
 }
