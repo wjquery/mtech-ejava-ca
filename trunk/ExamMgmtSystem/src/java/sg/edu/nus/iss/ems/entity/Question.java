@@ -74,12 +74,12 @@ public class Question implements Serializable {
     
     @JoinColumn(name = "Module_Code", referencedColumnName = "Code")
     @ManyToOne
-     @JsonManagedReference
+    @JsonManagedReference
     private Module module;
     
     @JoinColumn(name = "Created_By", referencedColumnName = "Id")
     @ManyToOne
-     @JsonManagedReference
+    @JsonManagedReference
     private User createdBy;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
@@ -88,7 +88,7 @@ public class Question implements Serializable {
     
     @JoinColumn(name = "Type", referencedColumnName = "Id")
     @ManyToOne
-     @JsonManagedReference
+    @JsonManagedReference
     private QuestionType questionType;
     
     @ManyToMany
