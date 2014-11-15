@@ -50,7 +50,7 @@ public class SubjectTag implements Serializable {
     @JsonBackReference
     private List<Question> questions;
     
-    @ManyToMany(mappedBy = "subjectTags")
+    @ManyToMany(mappedBy = "tags")
     private List<ExamSection> sections;
     
     public SubjectTag() {
