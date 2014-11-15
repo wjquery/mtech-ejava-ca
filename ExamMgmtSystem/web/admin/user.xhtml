@@ -16,8 +16,9 @@
                 <ems:menu/>
             </ui:define>
             <ui:define name="content">
-                <h:form>
+                
                     <p:panel style="min-height: 450px; padding: 5em 10em;">
+                        <h:form id="usersForm">
                         <p:messages/>
                         <p:dataTable id="datalist" var="u" value="#{userMgmtView.users}" 
                                      style="width: 80%; margin: auto;"
@@ -54,10 +55,32 @@
                                 <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{msg['btn.create']}" update="@form" oncomplete="PF('UserCreateDialog').show()"/>
                                 <p:commandButton id="viewButton"   icon="ui-icon-search" value="#{msg['btn.view']}" update="@form" oncomplete="PF('UserViewDialog').show()" disabled="true"/>
                                 <p:commandButton id="deleteButton" icon="ui-icon-trash" value="#{msg['btn.delete']}" actionListener="#{userMgmtView.delete()}" update=":growl,datalist" disabled="#{empty userMgmtView.selectedUser}"/>
+                               
                             </f:facet>
                         </p:dataTable>
+                         </h:form>
+                        
+                       <br/><br/>
+                        <h:form enctype="multipart/form-data" id="uploadForm">
+                            <p:panelGrid  style="width: 80%; margin: auto;" columns="1" >
+                                <p:outputLabel value="Upload CSV file of student/lecture info"/>
+                                <p>the csv should follow this format</p>
+                                <p><b>Username, Name, Role, Modules</b></p>
+                                <p>i.e. prof, Prof Lee, lecturer, mod1;mod2;mod3</p>
+                                
+                            <p:fileUpload value="#{userMgmtView.file}" mode="simple" allowTypes="*.csv"/>
+                            <p:commandButton value="Upload" ajax="false" actionListener="#{userMgmtView.upload}" update=":usersForm"/>
+                    
+                            </p:panelGrid>
+                         </h:form>
+                         
+                        
                     </p:panel>
-                </h:form>
+                    
+               
+                
+                
+                
             </ui:define>
         </ui:composition>
     </h:body>

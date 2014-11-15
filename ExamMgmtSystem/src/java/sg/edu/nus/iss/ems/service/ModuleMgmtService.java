@@ -12,4 +12,5 @@ public interface ModuleMgmtService {
     public void create(Module module);
     public Module update(Module module);
     public void delete(Module module);
+    public boolean isModuleExisted(String moduleCode);
 }
