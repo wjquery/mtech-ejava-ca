@@ -1,2 +1,4 @@
 sort table
 sel qn type -> show choice input
+
+enable remove question part, enable edit choice

@@ -145,7 +145,7 @@
                                     <p:selectOneMenu value="#{questionMgmtView.part.question}"
                                                      converter="questionConverter">
                                         <f:selectItems value="#{questionMgmtView.findSubQuestions()}" var="subqn"
-                                                       itemLabel="#{subqn.qid}"
+                                                       itemLabel="Qn #{subqn.qid}.(#{subqn.questionType.type}) #{subqn.questionText.length() gt 30 ? subqn.questionText.substring(0, 30) : subqn.questionText}..."
                                                        itemValue="#{subqn}"/>
                                     </p:selectOneMenu>&nbsp;&nbsp;
                                     <p:commandButton value="Add" actionListener="#{questionMgmtView.addPart()}" update=":createForm"/>
