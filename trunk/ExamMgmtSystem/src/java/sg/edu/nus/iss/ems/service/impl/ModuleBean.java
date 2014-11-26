@@ -4,7 +4,6 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.TypedQuery;
 import sg.edu.nus.iss.ems.entity.Module;
-import sg.edu.nus.iss.ems.entity.User;
 import sg.edu.nus.iss.ems.service.ModuleMgmtService;
 
 @Stateless
